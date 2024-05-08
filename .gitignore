@@ -1,5 +1,6 @@
 # data file
 /data/TRACE.db
+/(Chapter1)Data/TRACE.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

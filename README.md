@@ -28,40 +28,40 @@ This section reveals explanability and predictability of factors in credit marke
 ## Reference 
 
 ### (1) The Corporate Bond Factor Zoo
-####[link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786)
-####[data](https://openbondassetpricing.com/)
+#### [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786)
+#### [data](https://openbondassetpricing.com/)
 : This paper propose explanability of corporate bond return using various factors in bond, equity, macro, and fundamental data. 
 
 ### (2) AQR Corporate Bond Factors: Replication Failures and a New Framework
-#### [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652)  
-#### [link](https://www.stolborg.com/data)
+#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652)
+#### [data](https://www.stolborg.com/data)  
 : This paper deal with replication failure of Corporate Bond Factor Zoo by Dickerson, Alexander and Julliard, Christian and Mueller, Philippe, The Corporate Bond Factor Zoo (October 2, 2023). 
 
 ### (3) Vanguard’s portfolio construction framework
-#### [link](https://corporate.vanguard.com/content/dam/corp/research/pdf/vanguards_portfolio_construction_framework.pdf)
+#### [paper](https://corporate.vanguard.com/content/dam/corp/research/pdf/vanguards_portfolio_construction_framework.pdf)
 : This paper propose basic investing priciples and corresponding custom portfolio building. Our project review whether our proposed poftfolio strategy follows this protocol.
 
 ### (4) Long-Only Style Investing: Don't Just Mix, Integrate 
-#### [link](https://www.aqr.com/Insights/Research/White-Papers/Long-Only-Style-Investing)
+#### [paper](https://www.aqr.com/Insights/Research/White-Papers/Long-Only-Style-Investing)
 : This paper propose multi-factor integrated portfolio building strategy. Since traditional multi-factor merely mix multiple factors, overall portfolio was close to suboptimal. But integrated multi factor portfolio shows better and optimal portfolio.
 
 ### (5) Value Momentum Everywhere
-#### [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2174501)
+#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2174501)
 : This paper studies the returns to value and momentum strategies jointly across eight diverse markets and asset classes. Implication derived from empirical data from fixed income and credit market is led our research project to come up with advanced multi-factor asset pricing model.
 
 ### (6) Factor Zoo (.zip)
-#### [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4605976)
+#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4605976)
 : This paper collects cross-sectional stock return analysis, which are proposed in asset pricing academia.  The paper explore how much this ‘factor zoo’ can be compressed, focusing on explaining the available alpha rather than the covariance matrix of factor returns and suggest that about 15 factors are enough to span the entire factor zoo. 
 
 ### (7) Taming the Factor Zoo
-#### [link](https://www.aqr.com/About-Us/AQR-Insight-Award/2018/Taming-the-Factor-Zoo)
+#### [paper](https://www.aqr.com/About-Us/AQR-Insight-Award/2018/Taming-the-Factor-Zoo)
 : This paper propose
 
 ### (8) RETRACTED: Common risk factors in the cross-section of corporate bond returns☆
-#### [link](https://www.sciencedirect.com/science/article/pii/S0304405X18302095)
+#### [paper](https://www.sciencedirect.com/science/article/pii/S0304405X18302095)
 : This article has been retracted at the request of the authors. This article constructs risk factors based on the following characteristics of corporate bonds: downside risk, credit risk, and liquidity risk. The article shows that these factors have statistically significant risk premia and that they outperform other bond pricing models in explaining the returns of portfolios of corporate bonds sorted on industry, size, and maturity.
 
 ### (9) Priced Risk in Corporate Bonds
-#### [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4398449)
+#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4398449)
 : This paper revisit recent findings of (8) and provide evidence that common factor pricing in corporate bonds is exceedingly difficult to establish. Based on portfolio- and bond-level analyses, we demonstrate that previously proposed bond risk factors, with traded liquidity as the only marginal exception, do not have any incremental explanatory power over the corporate bond market factor. Consequently, this implies that the bond CAPM is not dominated by either traded- or nontraded-factor models in pairwise and multiple model comparison tests.
 

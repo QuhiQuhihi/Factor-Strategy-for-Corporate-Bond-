@@ -5,7 +5,7 @@ AQR's paper examine Investment Grade (Moodys AAA to A-), Investment Grade Minus 
 
 And we are going to examine each bond with factor $i$. So, compute $r_{t, i}$  for each signal $i$ at time $t$. And we assume that there are High, Mid, Low segments. This allow us to cover 67% of our universe, which incorporate broader and more extreme values into our model than Factor Zoo project. Equation for calculating each factor $i$ follows : 
 
- $f_{t,i} = r_{t,high-i} - r_{t,low-i}$
+ $f_{t,i} = r_{t,high-i} - r_{t,low-i}$   
 This means that we buy high factor (Top 33%) and sell short factor (low 33%).
 
 First, we use valueweighted returns since this makes the factors more implementable than equal-weighting and
@@ -16,9 +16,9 @@ This factors (premiums) will be multiplied with coefficient and sumed up. In her
 ## How to examine each factors
 a robust and consistent method for constructing all long-short factor returns, in addition to our clean data. 
 
-$f_{t,i} = \alpha_i + \beta_{CMKT} * CMKT_{t} + \beta_{TERM} * TERM_{t} + \epsilion_t$
+$f_{t,i} = \alpha_i + \beta_{CMKT} * CMKT_{t} + \beta_{TERM} * TERM_{t} + \epsilon_t$
 
-$f_{t,i} = \alpha_i + \beta_{CMKT} * CMKT_{t} + \beta_{TERM} * TERM_{t} + \beta_{factor i} * FACTOR_i + \epsilion_t$
+$f_{t,i} = \alpha_i + \beta_{CMKT} * CMKT_{t} + \beta_{TERM} * TERM_{t} + \beta_{factor i} * FACTOR_i + \epsilon_t$
 
 
 ## What is Benchmark Model

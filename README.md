@@ -16,9 +16,10 @@ Moreover, the project leverages the WRDS database for corporate-level data, wide
 In summary, our project effectively constructed a comprehensive dataset for the asset pricing model, encapsulating significant nuances of the corporate bond market. Further details on the database structure and the data cleaning processes are elaborated upon in the subsequent sections of this paper.
 
 ## [Chapter 2 Simple Factor Model for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter2)Factor_model/README.md)
-This section reveals explanability and predictability of factors in credit market. Factor Zoo project examines factor models using empirical data and AQR project shows different result. Our project consider attractability for real-world investors to use this simplified approach. Same empirical data sets (TRACE, WRDS) are used to build factor model.
+This section delves into the methodologies employed in the robust factor construction and regression analysis of corporate bond returns. Addressing replication failures in previous studies, a new framework utilizing clean data and rigorous statistical methods is proposed. The methodologies discussed include regression analysis of factor returns, long-short factor portfolio construction, robust factor construction techniques, and multiple testing corrections. The application of these methodologies aims to provide a more reliable framework for analyzing corporate bond returns, enhancing the reproducibility and validity of financial research in corporate bond markets.
 
 ## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter3)Porfrolio_model/README.md)
+
 
 ## [Chapter 4 Evaluating Performance](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter4)Evaluation/README.md)
 

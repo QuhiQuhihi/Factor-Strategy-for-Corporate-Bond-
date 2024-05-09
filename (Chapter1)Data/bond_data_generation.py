@@ -13,6 +13,137 @@ class data_factor:
         os.chdir(os.path.join(os.getcwd(), 'data'))
         print("data dir is : ", os.getcwd())
 
+    def filter_fisd(self,fisd):
+        #* ************************************** */
+        #* Filter fisd file                       */
+        #* ************************************** */ 
+        fisd = fisd[(fisd.interest_frequency != "-1") ]   # Unclassified by Mergent
+        fisd = fisd[(fisd.interest_frequency != "13") ]   # Variable Coupon (V)
+        fisd = fisd[(fisd.interest_frequency != "14") ]   # Bi-Monthly Coupon
+        fisd = fisd[(fisd.interest_frequency != "16") ]   # Unclassified by Mergent
+        fisd = fisd[(fisd.interest_frequency != "15") ]   # Unclassified by Mergent
+        fisd = fisd[(~fisd.interest_frequency.isnull()) ] # Unclassified by Mergent
+        fisd = fisd[(~fisd.offering_date.isnull()) ] # Unclassified by Mergent
+        fisd['day_count_basis'] = np.where(fisd['day_count_basis'].isnull(),
+                                        "30/360", fisd['day_count_basis'])
+    
+    def data_parse(self, traced):
+        # Step 1: I do not have enough manpower to manually
+        # inspect all of these non-1000 par bonds
+        # ----> Only keep bonds with par of 1000, 10, 5000, 2000
+        # i.e. those which are most frequent #
+        par_mask = ((traced.principal_amt == 1000) |\
+                    (traced.principal_amt == 10)   |\
+                    (traced.principal_amt == 5000) |\
+                    (traced.principal_amt == 2000)  )
+        traced = traced[par_mask]
+
+        # Step 2: $10 Par Bonds Inspection
+        tracednon10 = traced[traced['principal_amt'] == 10]
+
+        # Examine pricing
+        tracednon10.groupby("interest_frequency")['pr'].mean()
+        tracednon10.groupby("interest_frequency")['coupon'].mean()
+        tracednon10.groupby("interest_frequency")['pr'].count()
+
+        # Examine all bonds without semi-annual coupons
+        tracednon10_semi = tracednon10[tracednon10["interest_frequency"] != '2']
+        tracednon10_semi.groupby("interest_frequency")['pr'].mean()
+        tracednon10_semi.groupby("interest_frequency")['pr'].count()
+
+        # All bond except those with frequency == 2 have prices which correctly match
+        # there par values (10)
+        # Step 2.1: Scale all bonds (par==10) whose int_freq != 2 to be in 100 range 
+        # Note: Coupons (if any) can remain as is / they seem correct
+        mask_scale = ( (traced.principal_amt      == 10)&\
+                    (traced.interest_frequency != '2') )
+        traced.loc[mask_scale, 'prc_ew'] = traced.loc[mask_scale, 'prc_ew'] * 10
+        traced.loc[mask_scale, 'pr']     = traced.loc[mask_scale, 'pr']     * 10
+
+        # Outcome, all of the par == 10 bonds have correctly scaled prices #
+
+        # Step 3: Par values of $5000
+        tracednon5 = traced[traced['principal_amt'] == 5000]
+
+        # Examine pricing
+        tracednon5.groupby("interest_frequency")['pr'].mean()
+        tracednon5.groupby("interest_frequency")['coupon'].mean()
+        tracednon5.groupby("interest_frequency")['pr'].count()
+
+        # Can leave the prices unchanged
+
+        # Step 4: Par values of $2000
+        tracednon2 = traced[traced['principal_amt'] == 2000]
+
+        # Examine pricing
+        tracednon2.groupby("interest_frequency")['pr'].mean()
+        tracednon2.groupby("interest_frequency")['pr'].count()
+
+        # Can leave the prices unchanged
+
+        # Check #
+        traced['principal_amt'].value_counts(normalize = True)*100
+        traced.groupby("interest_frequency")['pr'].mean()
+        traced.groupby(["principal_amt","interest_frequency"])['pr'].mean()
+
+    def clean_bond_data(self,fisd):
+        #* ************************************** */
+        #* Apply BBW Bond Filters                 */
+        #* ************************************** */  
+        #1: Discard all non-US Bonds (i) in BBW
+        fisd = fisd[(fisd.country_domicile == 'USA')]
+
+        #2.1: US FX
+        fisd = fisd[(fisd.foreign_currency == 'N')]
+
+        #3: Must have a fixed coupon
+        fisd = fisd[(fisd.coupon_type != 'V')]
+
+        #4: Discard ALL convertible bonds
+        fisd = fisd[(fisd.convertible == 'N')]
+
+        #5: Discard all asset-backed bonds
+        fisd = fisd[(fisd.asset_backed == 'N')]
+
+        #6: Discard all bonds under Rule 144A
+        fisd = fisd[(fisd.rule_144a == 'N')]
+
+        #7: Remove Agency bonds, Muni Bonds, Government Bonds, 
+        mask_corp = ((fisd.bond_type != 'TXMU')&  (fisd.bond_type != 'CCOV') &  (fisd.bond_type != 'CPAS')\
+                    &  (fisd.bond_type != 'MBS') &  (fisd.bond_type != 'FGOV')\
+                    &  (fisd.bond_type != 'USTC')   &  (fisd.bond_type != 'USBD')\
+                    &  (fisd.bond_type != 'USNT')  &  (fisd.bond_type != 'USSP')\
+                    &  (fisd.bond_type != 'USSI') &  (fisd.bond_type != 'FGS')\
+                    &  (fisd.bond_type != 'USBL') &  (fisd.bond_type != 'ABS')\
+                    &  (fisd.bond_type != 'O30Y')\
+                    &  (fisd.bond_type != 'O10Y') &  (fisd.bond_type != 'O3Y')\
+                    &  (fisd.bond_type != 'O5Y') &  (fisd.bond_type != 'O4W')\
+                    &  (fisd.bond_type != 'CCUR') &  (fisd.bond_type != 'O13W')\
+                    &  (fisd.bond_type != 'O52W')\
+                    &  (fisd.bond_type != 'O26W')\
+                    # Remove all Agency backed / Agency bonds #
+                    &  (fisd.bond_type != 'ADEB')\
+                    &  (fisd.bond_type != 'AMTN')\
+                    &  (fisd.bond_type != 'ASPZ')\
+                    &  (fisd.bond_type != 'EMTN')\
+                    &  (fisd.bond_type != 'ADNT')\
+                    &  (fisd.bond_type != 'ARNT'))
+        fisd = fisd[(mask_corp)]
+
+        #8: No Private Placement
+        fisd = fisd[(fisd.private_placement == 'N')]
+
+        #9: Remove floating-rate, bi-monthly and unclassified coupons
+        fisd = fisd[(fisd.interest_frequency != 13) ] # Variable Coupon (V)
+
+        #10 Remove bonds lacking information for accrued interest (and hence returns)
+        fisd['offering_date']            = pd.to_datetime(fisd['offering_date'], 
+                                                        format='%Y-%m-%d')
+        fisd['dated_date']               = pd.to_datetime(fisd['dated_date'], 
+                                                        format='%Y-%m-%d')
+        fisd['maturity']               = pd.to_datetime(fisd['maturity'], 
+                                                        format='%Y-%m-%d')
+
     def get_bond_data(self):
         # creating file path
         dbfile = 'TRACE.db'

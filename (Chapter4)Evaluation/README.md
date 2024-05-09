@@ -8,10 +8,8 @@ this is fundamental idea of equity long-short strategy.
 
 This can show whether po
 
-
-### Evaluating Portfolio Strategy
-
-Our combined factor portfolio needs to prove it's optimality 
+Evaluating Portfolio Strategy
+Our combined factor portfolio needs to prove it's optimality
 
 public market equivalent portfolio
 
@@ -21,3 +19,8 @@ will be used as benchmar
 
 not only simple investment return, risk-return profile will be considered
 
+
+
+
+
+To be updated

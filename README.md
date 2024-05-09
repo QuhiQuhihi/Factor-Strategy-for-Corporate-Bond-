@@ -6,23 +6,21 @@ Unlike equity market, there are not so many attempts to breakdown risk premium o
  When expanding multi factor asset pricing model into fixed income market, the market shows its inherit incompleteness and proves multiple risk premium. For example, it is possible for one company to issue various bonds by setting differnt maturity, covenant, and collateral while there is one type of equity (besides prefered equity) This makes traders in credit market to consider multiple aspects with limited data. Also, structures embedded in fixed income securities, such as trench and secured, make valuation and execution difficult.  
 
 
-## [Chapter 1 About Data](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/data)
-This section discuss data used in this project. TRACE data from SEC and Financial Ratio from WRDS are used to build factor models. Since it is regulatory requirement to report corporate bond trade, a lot of insight about market can be found in this paper. However, complexity of data strucuture and cleaness makes huddle to implement asset pricing model in corporate bond strucuture. 
+## [Chapter 1 About Data](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter1)Data/README.md)
+This section is about the data sources and methodologies employed in our research project, emphasizing the integration of corporate bond trade data from the Trade Reporting and Compliance Engine (TRACE) database, managed by the Securities and Exchange Commission (SEC), and financial ratio data from Wharton Research Data Services (WRDS). The mandatory reporting requirement of corporate bond trades in TRACE offers rich insights into market dynamics, essential for constructing robust factor models.
 
-First of all, corporate bond data are more complex for several reasons: (i) whereas each company has a single stock, a company can have more than 100 bonds outstanding, (ii) the set of outstanding bonds changes over time, and (iii) some bond series are highly illiquid and the raw data have numerous erroneous and real outliers. 
+Corporate bond data pose inherent complexities due to several factors: (i) a single company may have multiple bonds outstanding, often exceeding 100; (ii) the inventory of these bonds varies over time; and (iii) bond series can be illiquid with numerous anomalies in the data set, both erroneous and real. Addressing these challenges was a critical task in our project. We implemented rigorous filters to eliminate known data inaccuracies, followed by a meticulous manual review of extreme outliers. This method ensured the exclusion of errors while preserving data points that represent genuine economic events, thus maintaining high data integrity for subsequent modeling.
 
-In addition, addressing these data challenges was one of the key issue in our project. The project applied filters that eliminate a range of known errors, and then analyze all the most extreme remaining outliers “by hand,” eliminating errors and retaining extreme returns that represent real economic events. This process assures that we secure high level of integrity data for our model.
+Moreover, the project leverages the WRDS database for corporate-level data, widely acknowledged and utilized within the academic community. This integration was crucial, albeit the project did not evaluate the database's internal consistency, instead directly incorporating its data into our model.
 
-Lastly, WRDS database, which is most well known and widely used among academic researchers, is used for corporate level data. We didn't examine the integrity and adopted to our model.
+In summary, our project effectively constructed a comprehensive dataset for the asset pricing model, encapsulating significant nuances of the corporate bond market. Further details on the database structure and the data cleaning processes are elaborated upon in the subsequent sections of this paper.
 
-Considering above points, the project completed building our dataset for asset pricing model. Detail about this database structure will be discussed in link above.
-
-## [Chapter 2 Simple Factor Model for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter2)Factor_model)
+## [Chapter 2 Simple Factor Model for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter2)Factor_model/README.md)
 This section reveals explanability and predictability of factors in credit market. Factor Zoo project examines factor models using empirical data and AQR project shows different result. Our project consider attractability for real-world investors to use this simplified approach. Same empirical data sets (TRACE, WRDS) are used to build factor model.
 
-## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter3)Porfrolio_model)
+## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter3)Porfrolio_model/README.md)
 
-## [Chapter 4 Evaluating Performance](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chpater4)Evaluation)
+## [Chapter 4 Evaluating Performance](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter4)Evaluation/README.md)
 
 ## [Chapter 5 Possible Application](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter5)Application)
 ## Reference 

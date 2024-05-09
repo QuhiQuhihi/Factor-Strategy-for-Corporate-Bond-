@@ -20,7 +20,7 @@ Considering above points, the project completed building our dataset for asset p
 ## [Chapter 2 Simple Factor Model for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter2)Factor_model)
 This section reveals explanability and predictability of factors in credit market. Factor Zoo project examines factor models using empirical data and AQR project shows different result. Our project consider attractability for real-world investors to use this simplified approach. Same empirical data sets (TRACE, WRDS) are used to build factor model.
 
-## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter3)Portfolio_model)
+## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter3)Porfrolio_model)
 
 ## [Chapter 4 Evaluating Performance](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chpater4)Evaluation)
 
@@ -28,13 +28,11 @@ This section reveals explanability and predictability of factors in credit marke
 ## Reference 
 
 ### (1) The Corporate Bond Factor Zoo
-#### [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786)
-#### [data](https://openbondassetpricing.com/)
+#### [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786) / #### [data](https://openbondassetpricing.com/)
 : This paper propose explanability of corporate bond return using various factors in bond, equity, macro, and fundamental data. 
 
 ### (2) AQR Corporate Bond Factors: Replication Failures and a New Framework
-#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652)
-#### [data](https://www.stolborg.com/data)  
+#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652)  #### [data](https://www.stolborg.com/data)  
 : This paper deal with replication failure of Corporate Bond Factor Zoo by Dickerson, Alexander and Julliard, Christian and Mueller, Philippe, The Corporate Bond Factor Zoo (October 2, 2023). 
 
 ### (3) Vanguard’s portfolio construction framework

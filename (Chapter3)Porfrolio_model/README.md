@@ -2,7 +2,9 @@
 
 Basic idea for multi factor portfolio is integrating, not mixing. Integrated factor strategy [(4)](https://www.aqr.com/Insights/Research/White-Papers/Long-Only-Style-Investing) 
 
-
+<div>
+<img src="./image_chapter3/integrate1.png" width="800" height="800">
+</div>
 
 <div>
 <img src="./image_chapter3/integrate2.png" width="800" height="400">

@@ -17,17 +17,15 @@ $TE_{target}$: Target tracking error.
 Aggregates information across all styles to form a combined expected return, constructing the portfolio in a single step:
 ```math
 ER_{integrated} = w_{mom} \cdot ER_{mom} + (1 - w_{mom}) \cdot ER_{val}    
+```
+```math
 Portfolio_{integrated} = Portfolio(ER_{integrated}, TE_{target})
 ```
+
 ### Graphic Visualization of integrate vs mix
 <div>
 <img src="./image_chapter3/integrate1.png" width="800" height="800">
 </div>
-
-<div>
-<img src="./image_chapter3/integrate2.png" width="800" height="400">
-</div>
-
 
 
 ## Practical Implications and Performance Analysis
@@ -43,6 +41,10 @@ Integrating investment styles in long-only portfolios offers substantial benefit
 - Reduces turnover by effectively netting trades across styles.
 - Enhances the ability to manage diversification and risk more effectively
 - Empirical evidence proves overperformance compare to portfolio mix
+
+<div>
+<img src="./image_chapter3/integrate2.png" width="800" height="400">
+</div>
 
 <div>
 <img src="./image_chapter3/integrate3.png" width="400" height="400">

@@ -62,3 +62,6 @@ This section delves into the methodologies employed in the robust factor constru
 #### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4398449)
 : This paper revisit recent findings of (8) and provide evidence that common factor pricing in corporate bonds is exceedingly difficult to establish. Based on portfolio- and bond-level analyses, we demonstrate that previously proposed bond risk factors, with traded liquidity as the only marginal exception, do not have any incremental explanatory power over the corporate bond market factor. Consequently, this implies that the bond CAPM is not dominated by either traded- or nontraded-factor models in pairwise and multiple model comparison tests.
 
+### (10) Bond Portfolio Optimization Using Dynamic Factor Models
+### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2079318)
+: This paper proposes an application of dynamic factor models for bond portfolio optimization. By deriving closed-form expressions for expected bond returns and their covariance matrices, it facilitates optimal mean-variance bond portfolios, including a duration-constrained variant for bond indexing. 

@@ -8,15 +8,15 @@ Combines separate long-only portfolios for each style (e.g., value, momentum) wi
 ```math
 Portfolio_{mix} = w_{mom} \cdot Portfolio(ER_{mom}, TE_{target}) + (1 - w_{mom}) \cdot Portfolio(ER_{val}, TE_{target})
 ```
-Where:
-$w_{mom}$: Weight assigned to the momentum portfolio.  
-$ER_{mom}$ and $ER_{val}$: Expected returns based on momentum and value.  
-$TE_{target}$: Target tracking error.
+Where:   
+$w_{mom}$: Weight assigned to the momentum portfolio.   
+$ER_{mom}$ and $ER_{val}$: Expected returns based on momentum and value.   
+$TE_{target}$: Target tracking error.    
 
 ### Portfolio Integrate
 Aggregates information across all styles to form a combined expected return, constructing the portfolio in a single step:
 ```math
-ER_{integrated} = w_{mom} \cdot ER_{mom} + (1 - w_{mom}) \cdot ER_{val}
+ER_{integrated} = w_{mom} \cdot ER_{mom} + (1 - w_{mom}) \cdot ER_{val}    
 Portfolio_{integrated} = Portfolio(ER_{integrated}, TE_{target})
 ```
 ### Graphic Visualization of integrate vs mix

@@ -1,17 +1,21 @@
 import os
 import sys
+import warnings
+warnings.filterwarnings("ignore")
 
 import sqlite3
 import numpy as np
 import pandas as pd
 
-class data_factor:
+class data_bond:
     def __init__(self):
-        self.start_date = '20'
+        self.start_date = '20140501'
         self.eval_date = '20240501'
-        print("main dir is : ", os.getcwd())
-        os.chdir(os.path.join(os.getcwd(), 'data'))
-        print("data dir is : ", os.getcwd())
+        # print("main dir is : ", os.getcwd())
+        # os.chdir(os.path.join(os.getcwd(), 'data'))
+        # print("data dir is : ", os.getcwd())
+
+        self.run()
 
     def filter_fisd(self,fisd):
         #* ************************************** */
@@ -149,7 +153,7 @@ class data_factor:
         dbfile = 'TRACE.db'
         # Create a SQL connection to our SQLite database
         conn = sqlite3.connect(dbfile)
-
+        print("{} is connected".format(dbfile))
         # creating cursor
         cursor = conn.cursor()
 
@@ -157,21 +161,28 @@ class data_factor:
         table_list = [a for a in cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table'")]
 
         # Fetching data from master_corp_agency
-        query = """select * from master_corp_agency table
-            master_corp_agency 
+        # query = """select * from master_corp_agency table
+        #     master_corp_agency 
+        #     where cusip_id in 
+        #     (select distinct(cusip_id) as uniq_cusip from daily_btds)
+        #     ;"""
+        query = """select * from master_corp_agency  
             where cusip_id in 
             (select distinct(cusip_id) as uniq_cusip from daily_btds)
             ;"""
         df=(cursor.execute(query)).fetchall()
+        print("TRACE.db information loaded")
         column_headers = [description[0] for description in cursor.description]
         master=pd.DataFrame(df,columns=column_headers)
 
         # Fetching data from daily_btds table
         query = "SELECT * FROM daily_btds"
         df=(cursor.execute(query)).fetchall()
+        print("Fetched data from daily_btds table")
         column_headers = [description[0] for description in cursor.description]
         df_btds=pd.DataFrame(df,columns=column_headers)
 
+        print("calculating investment grade bond return")
         # Calculating monthly coupon
         master['monthly_cpn']=master['cpn_rt']/12
 
@@ -203,6 +214,7 @@ class data_factor:
 
         # Reindex the dataframe for each cusip_id to include all days in the range
         # and forward fill the missing data
+        print("Reindex the dataframe for each cusip_i")
         bond_prices = (
             bond_prices
             .groupby('cusip_id')
@@ -218,16 +230,22 @@ class data_factor:
 
         # Average log returns by cusip_id
         # average_log_returns = bond_prices.groupby('cusip_id')['log_returns'].mean().reset_index()
-
+        print("converting into monthly retun")
         # Calculate monthly log returns
         bond_prices['month_year'] = bond_prices['trans_dt'].dt.to_period('M')
         monthly_log_returns = bond_prices.groupby(['cusip_id', 'month_year'])['log_returns'].sum().reset_index()
+        
+        # handle extreme values. It cannot happen in fixed income market.
+        monthly_log_returns['log_returns'] = df['log_returns'].apply(lambda x: 0.67 if x > 0.67 else x)
+        monthly_log_returns['log_returns'] = df['log_returns'].apply(lambda x: -0.67 if x < -0.67 else x)
 
+        print("completed")
 
         return monthly_log_returns
     
     def run(self):
-        self.get_factor_data()
+        bond_data_result = self.get_bond_data()
+        bond_data_result.to_csv("bond_data_result.csv")
 
-# if __init__=="__main__":
-#     data_bond.get_bond_data()
+if __name__ == '__main__':
+    run = data_bond()

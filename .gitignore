@@ -2,6 +2,7 @@
 /data/TRACE.db
 /(Chapter1)Data/TRACE.db
 /(Chapter1)Data/bond_data_result.csv
+/(Chapter1)Data/etf_data_result.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

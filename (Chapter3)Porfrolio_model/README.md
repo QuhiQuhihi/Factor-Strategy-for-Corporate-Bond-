@@ -60,35 +60,33 @@ The objective function for a mean-variance optimization problem can be expressed
 ```math
 objective function:   
 \min_{w} w^T \Sigma w - \lambda w^T \mu
-
+```
 with constraint:  
-\w^T * 1 = 1 (sum of weights equals one)   
-\w Non-negativity (no short selling included)   
-```
+$w^T * 1 = 1$ (sum of weights equals one)   
+$w$ Non-negativity (no short selling included)   
+
 where,
-```math
-\w is the vector of portfolio weights   
-\sigma is the covariance matrix of the asset returns   
-\mu is the vector of expected asset returns   
-\lambda is the risk tolerance factor, balancing between risk and return   
-```
+w is the vector of portfolio weights   
+$\sigma$ is the covariance matrix of the asset returns   
+$\mu$ is the vector of expected asset returns   
+$\lambda$ is the risk tolerance factor, balancing between risk and return   
 
 
 ## Benchmark2 - Risk Parity
 In risk parity, the portfolio is constructed to equalize the risk contribution of each asset, with the aim of achieving diversification and a more stable performance across different market environments. The risk contribution of each asset is proportionate to its weight and its marginal contribution to portfolio risk. The risk parity problem can be expressed as:
 ```math
 \min_{w} \left( \sum_{i=1}^{n} w_i \frac{\partial \sigma_p}{\partial w_i} - \frac{\sigma_p}{n} \right)^2   
+```
 
 with constraint:   
-\w^T * 1 = 1 (sum of weights equals one)    
-\w Non-negativity (no short selling included)   
-```
+$ w^T * 1 = 1 $ (sum of weights equals one)    
+$ w > 0 $ Non-negativity (no short selling included)   
+
 where,
-```math
-\w is the vector of portfolio weights   
-\sigma_p is the portfolio standard deviation    
-\frac{\partial \sigma_p}{\partial w_i} is the marginal contribution of the ith asset to portfolio risk.   
-```
+w is the vector of portfolio weights    
+$\sigma_p$ is the portfolio standard deviation     
+$\frac{\partial \sigma_p}{\partial w_i}$ is the marginal contribution of the ith asset to portfolio risk.   
+
 
 
 

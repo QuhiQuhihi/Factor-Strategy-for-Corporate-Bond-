@@ -19,7 +19,7 @@ In summary, our project effectively constructed a comprehensive dataset for the 
 This section delves into the methodologies employed in the robust factor construction and regression analysis of corporate bond returns. Addressing replication failures in previous studies, a new framework utilizing clean data and rigorous statistical methods is proposed. The methodologies discussed include regression analysis of factor returns, long-short factor portfolio construction, robust factor construction techniques, and multiple testing corrections. The application of these methodologies aims to provide a more reliable framework for analyzing corporate bond returns, enhancing the reproducibility and validity of financial research in corporate bond markets.
 
 ## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter3)Porfrolio_model/README.md)
-
+This chapter discusses the advantages of integrating various investment styles in long-only credit portfolios, compared to merely mixing them. This integration aims to enhance portfolio performance by capitalizing on the interactions between different styles. It contrasts the traditional mixed portfolio approach, where separate portfolios are simply combined, with an integrated approach that constructs portfolios through a unified strategy, resulting in higher returns and reduced costs. The empirical results favor the integrated approach, showing it offers better excess and risk-adjusted returns.
 
 ## [Chapter 4 Evaluating Performance](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter4)Evaluation/README.md)
 

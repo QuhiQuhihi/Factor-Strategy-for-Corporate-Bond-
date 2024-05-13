@@ -182,6 +182,10 @@ class data_bond:
         column_headers = [description[0] for description in cursor.description]
         df_btds=pd.DataFrame(df,columns=column_headers)
 
+        # close session
+        conn.commit()
+        conn.close()
+
         print("calculating investment grade bond return")
         # Calculating monthly coupon
         master['monthly_cpn']=master['cpn_rt']/12
@@ -235,17 +239,287 @@ class data_bond:
         bond_prices['month_year'] = bond_prices['trans_dt'].dt.to_period('M')
         monthly_log_returns = bond_prices.groupby(['cusip_id', 'month_year'])['log_returns'].sum().reset_index()
         
+        # filtering outliers
+        monthly_log_returns = df[df['log_returns']<+0.5]
+        monthly_log_returns = df[df['log_returns']>-0.5]
+
         # handle extreme values. It cannot happen in fixed income market.
-        monthly_log_returns['log_returns'] = df['log_returns'].apply(lambda x: 0.67 if x > 0.67 else x)
-        monthly_log_returns['log_returns'] = df['log_returns'].apply(lambda x: -0.67 if x < -0.67 else x)
+        monthly_log_returns['log_returns'] = df['log_returns'].apply(lambda x: 0.50 if x > 0.50 else x)
+        monthly_log_returns['log_returns'] = df['log_returns'].apply(lambda x: -0.50 if x < -0.50 else x)
 
         print("completed")
 
         return monthly_log_returns
-    
+
+
+
+    def get_liquid_bond_data(self):
+        # creating file path
+        dbfile = 'TRACE.db'
+        # Create a SQL connection to our SQLite database
+        conn = sqlite3.connect(dbfile)
+        print("{} is connected".format(dbfile))
+        # creating cursor
+        cursor = conn.cursor()
+
+        # reading all table names
+        table_list = [a for a in cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table'")]
+
+        # Fetching data from master_corp_agency
+        # query = """select * from master_corp_agency table
+        #     master_corp_agency 
+        #     where cusip_id in 
+        #     (select distinct(cusip_id) as uniq_cusip from daily_btds)
+        #     ;"""
+        
+        # fetching liquid cusip_id for each month
+        query = """
+        WITH RankedPrices AS (
+            SELECT 
+                (SUBSTR(trans_dt,0,8)) as YYYYMM, 
+                cusip_id, 
+                COUNT(close_pr) AS PriceCount,
+                RANK() OVER (PARTITION BY (SUBSTR(trans_dt,0,8)) ORDER BY COUNT(close_pr) DESC) AS Rank,
+                COUNT(*) OVER (PARTITION BY (SUBSTR(trans_dt,0,8))) AS TotalCount
+            FROM daily_btds
+            GROUP BY YYYYMM, cusip_id
+        )
+        SELECT YYYYMM, cusip_id
+        FROM RankedPrices
+        WHERE Rank <= TotalCount * 0.667
+        ORDER BY YYYYMM, Rank;
+        """
+        df=(cursor.execute(query)).fetchall()
+        print("TRACE.db liquid bond id loaded")
+        column_headers = [description[0] for description in cursor.description]
+        liquid=pd.DataFrame(df,columns=column_headers)
+        liquid_yyyymm = liquid.loc[:,'YYYYMM'].unique().tolist()
+        # print(liquid_yyyymm)
+        liquid_cusip = liquid.loc[:,'cusip_id'].unique().tolist()
+        # print(liquid_cusip)
+
+        query = """select * from master_corp_agency  
+            where cusip_id in 
+            (select distinct(cusip_id) as uniq_cusip from daily_btds)
+            ;"""
+        df=(cursor.execute(query)).fetchall()
+        print("TRACE.db master information loaded")
+        column_headers = [description[0] for description in cursor.description]
+        master=pd.DataFrame(df,columns=column_headers)
+
+        # Fetching data from daily_btds table
+        query = "SELECT * FROM daily_btds"
+        df=(cursor.execute(query)).fetchall()
+        print("Fetched data from daily_btds table")
+        column_headers = [description[0] for description in cursor.description]
+        df_btds=pd.DataFrame(df,columns=column_headers)
+        
+        # close database connnection
+        conn.commit()
+        conn.close()
+        print("database connection closed")
+
+
+        print("calculating investment grade bond return")
+        # Calculating monthly coupon
+        master['monthly_cpn']=master['cpn_rt']/12
+
+        # Filtering for Investment Grade Bonds
+        master_inv=master.loc[master['grade']=='I']
+
+        merged_df=df_btds.merge(master_inv,on='cusip_id')
+
+        # Adding Coupon to close price
+        merged_df['close_pr']=merged_df['close_pr']+merged_df['monthly_cpn']
+
+        bond_prices=merged_df[['trans_dt','cusip_id','close_pr']]
+        # Convert trans_dt to datetime
+        bond_prices['trans_dt'] = pd.to_datetime(bond_prices['trans_dt'])
+
+        # Ensure data is sorted
+        bond_prices = bond_prices.sort_values(by=['cusip_id', 'trans_dt'])
+
+        # Remove duplicates by taking the mean or last (here we use mean for example)
+        bond_prices = bond_prices.groupby(['trans_dt', 'cusip_id']).mean().reset_index()
+
+        # Set the index to trans_dt
+        bond_prices.set_index('trans_dt', inplace=True)
+
+        # Find the min and max dates to create a full date range
+        min_date = bond_prices.index.min()
+        max_date = bond_prices.index.max()
+        date_range = pd.date_range(min_date, max_date, freq='D')
+
+        # Reindex the dataframe for each cusip_id to include all days in the range
+        # and forward fill the missing data
+        print("Reindex the dataframe for each cusip_i")
+        bond_prices = (
+            bond_prices
+            .groupby('cusip_id')
+            .apply(lambda x: x.reindex(date_range).ffill().reset_index())
+            .reset_index(drop=True)
+        )
+
+        # Rename 'index' back to 'trans_dt'
+        bond_prices.rename(columns={'index': 'trans_dt'}, inplace=True)
+
+        # Calculate log returns
+        bond_prices['log_returns'] = np.log(bond_prices['close_pr'] / bond_prices['close_pr'].shift(1))
+
+        # Average log returns by cusip_id
+        # average_log_returns = bond_prices.groupby('cusip_id')['log_returns'].mean().reset_index()
+        print("converting into monthly retun")
+        # Calculate monthly log returns
+        bond_prices['month_year'] = bond_prices['trans_dt'].dt.to_period('M')
+        monthly_log_returns = bond_prices.groupby(['cusip_id', 'month_year'])['log_returns'].sum().reset_index()
+        
+
+        #######################
+        # Filtering out liquid cusip only
+        bond_prices_liquid =  pd.DataFrame(columns=monthly_log_returns.columns)
+        for yyyymm in liquid_yyyymm:
+            liq_cusip = liquid[liquid['YYYYMM']==yyyymm]['cusip_id'].tolist()
+            final_filtered_data = monthly_log_returns[
+                (monthly_log_returns['month_year'] == yyyymm) &
+                (monthly_log_returns['cusip_id'].isin(liq_cusip))
+            ]
+
+            bond_prices_liquid = pd.concat([bond_prices_liquid, final_filtered_data], ignore_index=True)
+        print("filtered out liquid bond data only")
+        print(bond_prices_liquid)
+
+        # monthly_log_returns = bond_prices_liquid
+        
+        # in process
+
+        #######################
+
+        # filtering outliers
+        bond_prices_liquid = bond_prices_liquid[bond_prices_liquid['log_returns']<+0.5]
+        bond_prices_liquid = bond_prices_liquid[bond_prices_liquid['log_returns']>-0.5]
+
+        # handle extreme values. If big movement happens, adjust return considering slipage 
+        monthly_log_returns['log_returns'] = bond_prices_liquid['log_returns'].apply(lambda x: 0.70 * x if x > 0.20 else x)
+        monthly_log_returns['log_returns'] = bond_prices_liquid['log_returns'].apply(lambda x: 0.70 * x if x < -0.50 else x)
+        print("filtered out outlier data")
+
+        print("bond data generation completed")
+
+        return bond_prices_liquid
+
+    def get_liquid_cusips(self):
+        # creating file path
+        dbfile = 'TRACE.db'
+        # Create a SQL connection to our SQLite database
+        conn = sqlite3.connect(dbfile)
+        print("{} is connected".format(dbfile))
+        # creating cursor
+        cursor = conn.cursor()
+
+        # fetching liquid cusip_id for each month
+        query = """
+        WITH RankedPrices AS (
+            SELECT 
+                (SUBSTR(trans_dt,0,8)) as YYYYMM, 
+                cusip_id, 
+                COUNT(close_pr) AS PriceCount,
+                RANK() OVER (PARTITION BY (SUBSTR(trans_dt,0,8)) ORDER BY COUNT(close_pr) DESC) AS Rank,
+                COUNT(*) OVER (PARTITION BY (SUBSTR(trans_dt,0,8))) AS TotalCount
+            FROM daily_btds
+            GROUP BY YYYYMM, cusip_id
+        )
+        SELECT YYYYMM, cusip_id
+        FROM RankedPrices
+        WHERE Rank <= TotalCount * 0.667
+        ORDER BY YYYYMM, Rank;
+        """
+        df=(cursor.execute(query)).fetchall()
+        print("TRACE.db liquid bond id loaded")
+
+        conn.commit()
+        conn.close()
+
+        column_headers = [description[0] for description in cursor.description]
+        column_headers = ['month_year', 'cusip_id']
+
+        liquid=pd.DataFrame(df,columns=column_headers)
+        liquid['month_year'].astype(str)
+
+        return liquid
+
+
+
+    def save_bond_output_to_db(self, data):
+
+        data['month_year'] = data['month_year'].astype(str)
+
+        # creating file path
+        dbfile = 'TRACE.db'
+        # Create a SQL connection to our SQLite database
+        conn = sqlite3.connect(dbfile)
+        print("{} is connected".format(dbfile))
+        # creating cursor
+        cursor = conn.cursor()
+        # Drop the table if it exists
+        conn.execute('DROP TABLE IF EXISTS bond_returns')
+
+        # Create a new table
+        conn.execute('''
+        CREATE TABLE bond_returns (
+            cusip_id TEXT,
+            month_year TEXT,
+            log_returns REAL
+        )
+        ''')
+
+        # Insert the DataFrame into the SQLite table
+        data.to_sql('bond_returns', conn, if_exists='append', index=False)
+
+        # Commit the changes and close the connection
+        conn.commit()
+        conn.close()
+
+    def save_liquid_cusip_output_to_db(self, data):
+
+        data['month_year'] = data['month_year'].astype(str)
+
+        # creating file path
+        dbfile = 'TRACE.db'
+        # Create a SQL connection to our SQLite database
+        conn = sqlite3.connect(dbfile)
+        print("{} is connected".format(dbfile))
+        # creating cursor
+        cursor = conn.cursor()
+        # Drop the table if it exists
+        conn.execute('DROP TABLE IF EXISTS bond_liquid_cusip')
+
+        # Create a new table
+        conn.execute('''
+        CREATE TABLE bond_liquid_cusip (
+            month_year TEXT,
+            cusip_id TEXT
+        )
+        ''')
+
+        # Insert the DataFrame into the SQLite table
+        data.to_sql('bond_liquid_cusip', conn, if_exists='append', index=False)
+
+        # Commit the changes and close the connection
+        conn.commit()
+        conn.close()
+
     def run(self):
-        bond_data_result = self.get_bond_data()
-        bond_data_result.to_csv("bond_data_result.csv")
+        # bond_data_result = self.get_bond_data()
+        # bond_data_result.to_csv("bond_data_result.csv")
+
+        bond_data_result = self.get_liquid_bond_data()
+        bond_data_result.to_csv("bond_liquid_data_result.csv")
+        self.save_bond_output_to_db(bond_data_result)
+
+        bond_liquid_result = self.get_liquid_cusips()
+        bond_liquid_result.to_csv("bond_liquid_cusip_result.csv")
+        self.save_liquid_cusip_output_to_db(bond_liquid_result)
+
 
 if __name__ == '__main__':
     run = data_bond()

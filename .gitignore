@@ -1,11 +1,20 @@
 # data file
 /data/TRACE.db
+
+/test_Result.csv
+/bond_liquid_cusip_result.csv
+/bond_liquid_data_result.csv
+/factors_bond_mkt_term_test.csv
+
 /(Chapter1)Data/TRACE.db
 /(Chapter1)Data/bond_data_result.csv
 /(Chapter1)Data/etf_data_result.csv
 /(Chapter1)Data/bond_liquid_data_result.csv
 /(Chapter1)Data/bond_liquid_cusip_result.csv
+
+
 /(Chapter1)Data/test.ipynb
+/(Chapter2)Factor_model/test.ipynb
 
 
 # Byte-compiled / optimized / DLL files

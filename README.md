@@ -27,11 +27,11 @@ This chapter discusses the advantages of integrating various investment styles i
 ## Reference 
 
 ### (1) The Corporate Bond Factor Zoo
-#### [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786) / #### [data](https://openbondassetpricing.com/)
+#### [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786) [data](https://openbondassetpricing.com/)
 : This paper propose explanability of corporate bond return using various factors in bond, equity, macro, and fundamental data. 
 
 ### (2) AQR Corporate Bond Factors: Replication Failures and a New Framework
-#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652)  #### [data](https://www.stolborg.com/data)  
+#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652) [data](https://www.stolborg.com/data)  
 : This paper deal with replication failure of Corporate Bond Factor Zoo by Dickerson, Alexander and Julliard, Christian and Mueller, Philippe, The Corporate Bond Factor Zoo (October 2, 2023). 
 
 ### (3) Vanguard’s portfolio construction framework

@@ -11,9 +11,10 @@ class data_bond:
     def __init__(self):
         self.start_date = '20140501'
         self.eval_date = '20240501'
-        # print("main dir is : ", os.getcwd())
-        # os.chdir(os.path.join(os.getcwd(), 'data'))
-        # print("data dir is : ", os.getcwd())
+        self.main_dir = os.path.join("C:\\", 'workspace', 'Factor-Strategy-for-Corporate-Bond-')
+        print("main dir is : ", self.main_dir)
+        self.data_dir = os.path.join(self.main_dir, "(Chapter1)Data")
+        print("data dir is : ", self.data_dir)
 
         self.run()
 
@@ -150,6 +151,7 @@ class data_bond:
 
     def get_bond_data(self):
         # creating file path
+        os.chdir(self.data_dir)
         dbfile = 'TRACE.db'
         # Create a SQL connection to our SQLite database
         conn = sqlite3.connect(dbfile)
@@ -176,13 +178,16 @@ class data_bond:
         master=pd.DataFrame(df,columns=column_headers)
 
         # Fetching data from daily_btds table
-        query = "SELECT * FROM daily_btds"
+        query = """
+        SELECT * FROM daily_btds WHERE trans_dt >= "2012-12-31" and trans_dt <= "2021-12-31"
+        """
         df=(cursor.execute(query)).fetchall()
         print("Fetched data from daily_btds table")
         column_headers = [description[0] for description in cursor.description]
         df_btds=pd.DataFrame(df,columns=column_headers)
 
         # close session
+        os.chdir(self.main_dir)
         conn.commit()
         conn.close()
 
@@ -255,6 +260,7 @@ class data_bond:
 
     def get_liquid_bond_data(self):
         # creating file path
+        os.chdir(self.data_dir)
         dbfile = 'TRACE.db'
         # Create a SQL connection to our SQLite database
         conn = sqlite3.connect(dbfile)
@@ -282,6 +288,7 @@ class data_bond:
                 RANK() OVER (PARTITION BY (SUBSTR(trans_dt,0,8)) ORDER BY COUNT(close_pr) DESC) AS Rank,
                 COUNT(*) OVER (PARTITION BY (SUBSTR(trans_dt,0,8))) AS TotalCount
             FROM daily_btds
+            WHERE trans_dt >= "2012-12-31" and trans_dt <= "2021-12-31"
             GROUP BY YYYYMM, cusip_id
         )
         SELECT YYYYMM, cusip_id
@@ -308,13 +315,16 @@ class data_bond:
         master=pd.DataFrame(df,columns=column_headers)
 
         # Fetching data from daily_btds table
-        query = "SELECT * FROM daily_btds"
+        query = """
+        SELECT * FROM daily_btds WHERE trans_dt >= "2012-12-31" and trans_dt <= "2021-12-31"
+        """
         df=(cursor.execute(query)).fetchall()
         print("Fetched data from daily_btds table")
         column_headers = [description[0] for description in cursor.description]
         df_btds=pd.DataFrame(df,columns=column_headers)
         
         # close database connnection
+        os.chdir(self.main_dir)
         conn.commit()
         conn.close()
         print("database connection closed")
@@ -352,7 +362,7 @@ class data_bond:
 
         # Reindex the dataframe for each cusip_id to include all days in the range
         # and forward fill the missing data
-        print("Reindex the dataframe for each cusip_i")
+        print("Reindex the dataframe for each cusip_id")
         bond_prices = (
             bond_prices
             .groupby('cusip_id')
@@ -409,6 +419,7 @@ class data_bond:
 
     def get_liquid_cusips(self):
         # creating file path
+        os.chdir(self.data_dir)
         dbfile = 'TRACE.db'
         # Create a SQL connection to our SQLite database
         conn = sqlite3.connect(dbfile)
@@ -426,6 +437,7 @@ class data_bond:
                 RANK() OVER (PARTITION BY (SUBSTR(trans_dt,0,8)) ORDER BY COUNT(close_pr) DESC) AS Rank,
                 COUNT(*) OVER (PARTITION BY (SUBSTR(trans_dt,0,8))) AS TotalCount
             FROM daily_btds
+           WHERE trans_dt >= "2012-12-31" and trans_dt <= "2021-12-31"
             GROUP BY YYYYMM, cusip_id
         )
         SELECT YYYYMM, cusip_id
@@ -436,6 +448,8 @@ class data_bond:
         df=(cursor.execute(query)).fetchall()
         print("TRACE.db liquid bond id loaded")
 
+        # close session and change directory
+        os.chdir(self.main_dir)
         conn.commit()
         conn.close()
 
@@ -454,6 +468,7 @@ class data_bond:
         data['month_year'] = data['month_year'].astype(str)
 
         # creating file path
+        os.chdir(self.data_dir)
         dbfile = 'TRACE.db'
         # Create a SQL connection to our SQLite database
         conn = sqlite3.connect(dbfile)
@@ -475,7 +490,10 @@ class data_bond:
         # Insert the DataFrame into the SQLite table
         data.to_sql('bond_returns', conn, if_exists='append', index=False)
 
+        print("TRACE.db bond retun is loaded")
+
         # Commit the changes and close the connection
+        os.chdir(self.main_dir)
         conn.commit()
         conn.close()
 
@@ -484,6 +502,7 @@ class data_bond:
         data['month_year'] = data['month_year'].astype(str)
 
         # creating file path
+        os.chdir(self.data_dir)
         dbfile = 'TRACE.db'
         # Create a SQL connection to our SQLite database
         conn = sqlite3.connect(dbfile)
@@ -504,7 +523,9 @@ class data_bond:
         # Insert the DataFrame into the SQLite table
         data.to_sql('bond_liquid_cusip', conn, if_exists='append', index=False)
 
+        print("TRACE.db liquid cusipid is loaded")
         # Commit the changes and close the connection
+        os.chdir(self.main_dir)
         conn.commit()
         conn.close()
 

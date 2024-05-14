@@ -6,17 +6,14 @@ warnings.filterwarnings("ignore")
 import yfinance as yf
 import pandas as pd
 
-# Define the tickers and the date range
-tickers = ['AGG', 'IGSB', 'LQD', 'HYG', 'SHYG']
-start_date = '2013-12-31'
-end_date = '2023-12-31'
+
 
 class data_etf:
     def __init__(self):
         # Define the tickers and the date range
-        tickers = ['AGG', 'IGSB', 'LQD', 'HYG', 'SHYG']
-        start_date = '2013-12-31'
-        end_date = '2023-12-31'
+        self.tickers = ['AGG', 'IGSB', 'LQD', 'HYG', 'SHYG']
+        self.start_date = '2013-12-31'
+        self.end_date = '2023-12-31'
 
 
         # Initialize an empty DataFrame for all tickers
@@ -26,7 +23,7 @@ class data_etf:
     # Function to download and process data for a single ticker
     def process_ticker_data(self, ticker):
         # Download the historical data
-        data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+        data = yf.download(ticker, start=self.start_date, end=self.end_date, progress=False)
         
         # Resample to monthly frequency, using the last available data of the month
         monthly_data = data['Adj Close'].resample('M').last()
@@ -46,7 +43,7 @@ class data_etf:
     def run(self):
         all_data = pd.DataFrame()
         # Loop through each ticker, process the data, and join with the main DataFrame
-        for ticker in tickers:
+        for ticker in self.tickers:
             ticker_data = self.process_ticker_data(ticker)
             all_data = pd.concat([all_data, ticker_data], axis=1)
         print(all_data)

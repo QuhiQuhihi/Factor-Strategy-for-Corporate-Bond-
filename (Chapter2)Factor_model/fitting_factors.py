@@ -124,7 +124,9 @@ class factor_model:
         df=(cursor.execute(query)).fetchall()
         print("market factor is loaded")
         column_headers = [description[0] for description in cursor.description]
-        factor_data_result=pd.DataFrame(df,columns=column_headers)
+        factor_data_base=pd.DataFrame(df,columns=column_headers)
+        factor_data_base['date'] = pd.to_datetime(factor_data_base['date'], format='%Y-%m-%d')
+        
         # print(factor_data)
 
 
@@ -132,7 +134,7 @@ class factor_model:
             if table_name == 'factors_bond_mkt_term':
                 continue
 
-            elif table_name == 'factorfactors_bond_level':
+            elif table_name == 'factors_bond_level':
                 query = """  
                     select * from factors_bond_level
                     WHERE date >= "2012-12-31" and date <= "2021-12-31" 
@@ -141,6 +143,7 @@ class factor_model:
                 print("market factor is loaded")
                 column_headers = [description[0] for description in cursor.description]
                 factor_data=pd.DataFrame(df,columns=column_headers)
+                factor_data['date'] = pd.to_datetime(factor_data['date'], format='%Y-%m-%d')
                 # print(factor_data)
             
             elif table_name == 'factors_bond_firm_level':
@@ -152,14 +155,13 @@ class factor_model:
                 print("market factor is loaded")
                 column_headers = [description[0] for description in cursor.description]
                 factor_data=pd.DataFrame(df,columns=column_headers)
+                factor_data['date'] = pd.to_datetime(factor_data['date'], format='%Y-%m-%d')
                 # print(factor_data)
             else:
                 print("please select vaild factor table name")
 
 
-            factor_data_result = pd.merge(factor_data_result, factor_data,how=left, )
-
-
+            factor_data_result = factor_data_base.merge(factor_data,left_index=True,right_index=True )
 
 
         # close session and change directory
@@ -173,21 +175,30 @@ class factor_model:
         print("Reindex the dataframe for each cusip_id")
 
         # convert str type date column into 
-        factor_data['date'] = pd.to_datetime(factor_data['date'], format='%Y-%m-%d')
+        # factor_data['date'] = pd.to_datetime(factor_data['date'], format='%Y-%m-%d')
 
 
         # Rename 'index' back to 'trans_dt'
         # factor_data.rename(columns={'index': 'trans_dt'}, inplace=True)
-        factor_data['month_year'] = factor_data['date'].dt.to_period('M')
+        factor_data_result.drop(columns = ['date_y'], inplace=True)
+        factor_data_result['month_year'] = factor_data_result['date_x'].dt.to_period('M')
+        factor_data_result.drop(columns = ['date_x'], inplace=True)
+
+        factor_data_result.set_index('month_year', inplace=True)
+        for col in factor_data_result.columns.tolist():
+            factor_data_result[col] = pd.to_numeric(factor_data_result[col], errors='coerce')
 
         # Calculate monthly log returns
         print("converting into monthly retun")
-        monthly_avg_factor = factor_data.groupby(['month_year']).mean().reset_index()
-        monthly_avg_factor.drop(columns = ['date'], inplace=True)
-        # print(monthly_avg_factor)
+        monthly_avg_factor = factor_data_result.groupby(factor_data_result.index).mean()
+        # monthly_avg_factor = factor_data_result.groupby(['month_year']).mean().reset_index()
+        monthly_avg_factor.reset_index(inplace=True)
+        # monthly_avg_factor.set_index('month_year',inplace=True)
 
-        monthly_avg_factor.set_index('month_year', inplace=True)
-        monthly_avg_factor.to_csv("factors_bond_mkt_term_test.csv")
+        # monthly_avg_factor.drop(columns = ['month_year'], inplace=True) ############
+
+
+        monthly_avg_factor.to_csv("factors_multi_bond_mkt_term_test.csv")
 
         return monthly_avg_factor
     
@@ -218,7 +229,7 @@ class factor_model:
 
         return liquid_cusip
 
-    def fitting_factor_by_cusip(self, cusip):
+    def fitting_factor_by_cusip(self, cusip, factor_table):
         # creating file path
         os.chdir(self.data_dir)
         dbfile = 'TRACE.db'
@@ -246,8 +257,8 @@ class factor_model:
         bond_price_date_list = bond_price_match['month_year'].unique().tolist()
         bond_price_match.set_index('month_year', inplace=True)
 
-
-        factor_table_match = self.factor_table.loc[bond_price_date_list]
+        factor_table.set_index('month_year', inplace=True)
+        factor_table_match = factor_table.loc[bond_price_date_list]
         
         # convert factor table's index datatype into str type to merge
         factor_table_match.index = factor_table_match.index.to_timestamp().strftime('%Y-%m')
@@ -258,7 +269,7 @@ class factor_model:
         X_aligned, y_aligned = factor_table_match.align(bond_price_match, join='inner', axis=0)
 
         # dataframe to return monthly factor coefficient
-        result = pd.DataFrame(
+        result_df = pd.DataFrame(
             columns=['cusip_id','month_year', 'const'] + factor_table_match.columns.tolist(),
         )
 
@@ -288,10 +299,12 @@ class factor_model:
             for j in range(len(results.params)):
                 result_parameters.append(results.params[j])
 
-            result.loc[i-8] = result_parameters
+            result_df.loc[i-8] = result_parameters
+        
+        print("fitting result")
+        print(result_df)
 
-        # result.to_csv("test_Result.csv")
-        return result
+        return result_df
     
     def fitting_factor_by_cusip_old(self, cusip, factors):
         """
@@ -317,7 +330,19 @@ class factor_model:
 
         print(self.result)
 
+    def generate_multi_factor_fitting_table(self, df_new_fitting_result):
+        index_new_start = len(self.multi_result)
+        len_new_df = len(df_new_fitting_result)
 
+        print("self.factor_multi_table in generate_multi_factor_fitting_table")
+        print(df_new_fitting_result.columns)
+        print(self.multi_result.columns)
+
+
+        for i in range(len_new_df):
+            self.multi_result.loc[i + index_new_start] = df_new_fitting_result.iloc[i].tolist()
+
+        print(self.multi_result)
 
 
     
@@ -327,6 +352,9 @@ class factor_model:
         self.factor_table = self.load_base_factor_data([test_table])
         self.factor_list = self.factor_table.columns.tolist()
 
+        self.factor_multi_table = self.load_multi_factor_data(["factors_bond_level", "factors_bond_firm_level"])
+        self.factor_multi_list = self.factor_multi_table.columns.tolist()
+
         self.cusips_table = self.load_cusips()
         self.cusips_list_unique = self.cusips_table['cusip_id'].unique().tolist()
 
@@ -334,11 +362,26 @@ class factor_model:
             columns=['cusip_id','month_year', 'const'] + self.factor_list
         )
 
-        for cusip in self.cusips_list_unique:
-            fitting_result = self.fitting_factor_by_cusip(cusip)
-            self.generate_factor_fitting_table(fitting_result)
+        self.multi_result = pd.DataFrame(
+            columns=['cusip_id','month_year', 'const'] + self.factor_multi_list
 
-        self.result.to_csv("test_Result.csv")
+        )
+
+        # for cusip in self.cusips_list_unique:
+        #     fitting_result = self.fitting_factor_by_cusip(cusip, self.factor_table)
+        #     self.generate_factor_fitting_table(fitting_result)
+
+        # self.result.to_csv("test_Result.csv")
+
+
+
+        # for cusip in self.cusips_list_unique:
+        for cusip in ["001055AC6"]:
+            fitting_result = self.fitting_factor_by_cusip(cusip, self.factor_multi_table)
+            self.generate_multi_factor_fitting_table(fitting_result)
+        self.result.to_csv("test_multi_Result.csv")
+
+
         # for cusip in self.cusips_list_unique:
         #     self.fitting_factor_by_cusip(cusip)
 

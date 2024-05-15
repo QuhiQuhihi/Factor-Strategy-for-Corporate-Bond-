@@ -260,7 +260,7 @@ class factor_model:
         for cusip in self.cusips_list_unique:
             fitting_result = self.fitting_factor_by_cusip(cusip, self.factor_table)
             self.generate_factor_fitting_table(fitting_result)
-            print("{} completed {} process completed".format(cusip, round(i / len(self.cusips_list_unique))))
+            print("{} of {} completed {} process completed".format(i, len(self.cusips_list_unique),round(i / len(self.cusips_list_unique), 4)))
             i = i + 1
         self.result.to_csv("test_multi_Result.csv")
 

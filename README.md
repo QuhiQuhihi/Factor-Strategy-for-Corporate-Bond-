@@ -65,3 +65,7 @@ This chapter discusses the advantages of integrating various investment styles i
 ### (10) Bond Portfolio Optimization Using Dynamic Factor Models
 ### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2079318)
 : This paper proposes an application of dynamic factor models for bond portfolio optimization. By deriving closed-form expressions for expected bond returns and their covariance matrices, it facilitates optimal mean-variance bond portfolios, including a duration-constrained variant for bond indexing. 
+
+### (11) Is 1/n Really Better than Optimal Mean-Variance Portfolio?   
+### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2530287)   
+: This paper evaluates the performance ranking of the 1/n portfolio in absolute sense. The author enumerate all possible portfolios within a specified asset universe, and compare the 1/n portfolio among all possible portfolios to find that 1/n is not really better than the average portfolio.

@@ -87,6 +87,9 @@ w is the vector of portfolio weights
 $\sigma_p$ is the portfolio standard deviation     
 $\frac{\partial \sigma_p}{\partial w_i}$ is the marginal contribution of the ith asset to portfolio risk.   
 
+## Benchmark3 - Equal Weight
+
+We will use equal weight portfolio 1/N as the simplest but powerful enough benchmark. Existing research propose power of 1/n portfolio in relative criteria. The author compares the 1/n portfolio among all possible portfolios to prove that other optimization based methods makes absoulte difference. But they also argue that it was not easy to find weakiness of 1/n very simple portflio.
 
 
 

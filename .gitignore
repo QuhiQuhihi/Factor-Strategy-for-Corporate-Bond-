@@ -12,9 +12,11 @@
 /(Chapter1)Data/bond_liquid_data_result.csv
 /(Chapter1)Data/bond_liquid_cusip_result.csv
 
-
 /(Chapter1)Data/test.ipynb
 /(Chapter2)Factor_model/test.ipynb
+
+/(Chapter3)Porfrolio_model/multi_factor_rank.csv
+/(Chapter3)Porfrolio_model/base_factor_rank.csv
 
 
 # Byte-compiled / optimized / DLL files

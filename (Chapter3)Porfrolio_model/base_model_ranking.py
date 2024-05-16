@@ -13,6 +13,7 @@ class rank_base_factor:
         self.start_date = '20140501'
         self.eval_date = '20240501'
         print("current dir is : ", os.getcwd())
+        self.current_dir = os.getcwd()
         self.main_dir = os.path.join("C:\\", 'workspace', 'Factor-Strategy-for-Corporate-Bond-')
         print("main dir is : ", self.main_dir)
         self.data_dir = os.path.join(self.main_dir, "(Chapter1)Data")
@@ -60,15 +61,18 @@ class rank_base_factor:
         print("market factor is loaded")
         column_headers = [description[0] for description in cursor.description]
         factor_rank_data=pd.DataFrame(df,columns=column_headers)
-
+        
         conn.commit()
         conn.close()
-
+        os.chdir(self.current_dir)
+        
         print(factor_rank_data)
+        factor_rank_data.to_csv("base_factor_rank.csv")
         return factor_rank_data
-
+    
     def run(self):
-        self.load_calc_base_factor()
+        base_rank = self.load_calc_base_factor()
+        return base_rank
 
 if __name__ == '__main__':
     run = rank_base_factor()

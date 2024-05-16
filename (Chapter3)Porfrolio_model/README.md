@@ -95,7 +95,7 @@ $\frac{\partial \sigma_p}{\partial w_i}$ is the marginal contribution of the ith
 
 ## Benchmark3 - Equal Weight
 
-We will use equal weight portfolio 1/N as the simplest but powerful enough benchmark. Existing research propose power of 1/n portfolio in relative criteria. The author compares the 1/n portfolio among all possible portfolios to prove that other optimization based methods makes absoulte difference. But they also argue that it was not easy to find weakiness of 1/n very simple portflio.
+We will use equal weight portfolio 1/N as the simplest but powerful enough benchmark. Existing research propose power of 1/n portfolio in relative criteria. The author compares the 1/n portfolio among all possible portfolios to prove that other optimization based methods makes absoulte difference. But they also argue that it was not easy to find weakiness of 1/n very simple portflio. [(11)] The author of existing research paper enumerate all possible portfolios within a specified asset universe, and compare the 1/n portfolio among all possible portfolios to find that 1/n is not really better than the average portfolio. But, the author also state that 1/n portfolio showed great performance compare to its simplicity and it was not easy to prove existence of alternative solution.
 
 
 

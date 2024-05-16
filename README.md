@@ -69,3 +69,15 @@ This chapter discusses the advantages of integrating various investment styles i
 ### (11) Is 1/n Really Better than Optimal Mean-Variance Portfolio?   
 ### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2530287)   
 : This paper evaluates the performance ranking of the 1/n portfolio in absolute sense. The author enumerate all possible portfolios within a specified asset universe, and compare the 1/n portfolio among all possible portfolios to find that 1/n is not really better than the average portfolio.
+
+### (12) Common factors in corporate bond returns.
+### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2576784)
+: Four well-known characteristics (carry, defensive, momentum and value) explain a significant portion of the cross-sectional variation in corporate bond excess returns. These characteristics have positive risk-adjusted expected returns and are not subsumed by traditional market premia or respective equity anomalies.
+
+### (13) The cross-section of expected corporate bond returns: Betas or characteristics?
+### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=281209)
+: This paper finds that default betas are significantly related to the cross-section of average bond returns even after controlling for characteristics such as duration, ratings, and yield-to-maturity. Among characteristics, only yield-to-maturity is significantly related to average bond returns after controlling for default and term betas. The default and term factors are able to price the returns of beta-sorted portfolios better than they do the returns of yield-sorted portfolios.  
+
+### (14) Momentum in Corporate Bond Returns
+### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1651853)
+: This paper analyze momentum factor's impact to corporate bond return including investment grade and non-investment grade (high yield). Momentum is driven by non-investment grade (NIG) bonds. Momentum profits have increased over time along with the growth of this segment. Momentum profits do not appear to compensate for risk or persist as a result of trading frictions. Bond momentum is not just a manifestation of equity momentum.

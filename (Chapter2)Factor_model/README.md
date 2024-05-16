@@ -10,6 +10,20 @@ To isolate the unique returns attributed to specific factors independent of over
 
 #### $f_{t,i} = \alpha_i + \beta_{CMKT} * CMKT_{t} + \beta_{TERM} * TERM_{t} + \beta_{factor i} * FACTOR_i + \epsilon_t$
 
+## Multi Regression based factor model
+To enhance explanatory power beyond term premium and market premium, multiple factors are included in this project. Following is 11 additional factors used in our model. Term and market factors are included as base model.   
+- Duration : Modified Macaulay duration [(12)]
+- Credit Spread :  Yield to maturity minus the yield on a cash-flow matched portfolio of treasuries [(12)]
+- Yield To Maturity : Promised yield to maturity [(12)]
+- Volatility :  36 month vol [(8)]
+- Skewness :  36 month skew [(8)]
+- 3 month momentum : 3 month momentum [(14)]
+- 6 month momentum : 6 month momentum [(14)]
+- Price to book ratio :  Bond book value / market price [(12)]
+- Default beta :  The regression coefficient on DEF in a rolling regression of bonds excess return on the default factor [(13)]
+- Value at Risk (10%) : -1 * 4th lowest observation in a 36 month rolling window [(8)]
+- Equity Momentum :  6 month equity momentum [(14)] [(13)]  
+
 ## Minor issue with data and quant model
 In the academic context of fixed income securities, the observed premium of on-the-run (OTR) bonds over off-the-run (OTR) bonds is a well-documented phenomenon, often attributed to liquidity differences and demand disparities between the two types of bonds.
 

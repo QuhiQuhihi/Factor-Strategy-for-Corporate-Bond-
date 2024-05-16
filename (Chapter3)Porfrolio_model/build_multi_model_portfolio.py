@@ -144,7 +144,7 @@ class portfolio_multi:
         return "1111"
 
 if __name__ == '__main__':
-    run = portfolio_base()
+    run = portfolio_multi()
     # run.load_base_factor_rank()
     run.load_liquid_bond_return(
         cusip_ids = ['001055AC6','001055AD4','001055AE2'],

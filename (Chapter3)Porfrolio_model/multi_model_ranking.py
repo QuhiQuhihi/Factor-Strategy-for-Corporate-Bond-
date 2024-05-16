@@ -119,7 +119,7 @@ class rank_multi_factor:
             cast(cbm_ranked_factor.var_rank as float)/cbm_datapoint.total_num as var_rank_percentile,
             cast(cbm_ranked_factor.equity_mom_rank as float)/cbm_datapoint.total_num as equity_mom_rank_percentile,
             cast(cbm_ranked_factor.market_rank as float)/cbm_datapoint.total_num as market_rank_percentile,
-            cast(cbm_ranked_factor.term_rank as float)/cbm_datapoint.total_num as term_rank_percentile,
+            cast(cbm_ranked_factor.term_rank as float)/cbm_datapoint.total_num as term_rank_percentile
         from cbm_ranked_factor
         inner join cbm_datapoint
         on cbm_ranked_factor.month_year = cbm_datapoint.month_year

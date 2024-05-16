@@ -66,17 +66,19 @@ class portfolio_base:
         # short term signal if rank is bottom 33%
         self.df_base_rank['term_signal'].apply((lambda x: -1 if x > 0.66 else x))
 
-        self.df_base_portfolio_weight = pd.DataFrame()
-
-        for yyyy_mm in self.month_year_base_rank:
-            monthly_rank = self.df_base_rank.query("month_year == '{}'".format(yyyy_mm))
-            num_monthly_rank = monthly_rank.count()
-            num_monthly_rank_long = monthly_rank.query("market_signal > {}".format(0.9)).count()
-            num_monthly_rank_short = monthly_rank.query("market_signal < {}".format(-0.9)).count()
-            num_monthly_rank_neutral = num_monthly_rank - num_monthly_rank_long - num_monthly_rank_short
+        ###  build 1/n long and short portfolio to check whether this strategy works 
+        # self.df_base_portfolio_weight = pd.DataFrame()
+        # for yyyy_mm in self.month_year_base_rank:
+        #     monthly_rank = self.df_base_rank.query("month_year == '{}'".format(yyyy_mm))
+        #     num_monthly_rank = monthly_rank.count()
+        #     num_monthly_rank_long = monthly_rank.query("market_signal > {}".format(0.9)).count()
+        #     num_monthly_rank_short = monthly_rank.query("market_signal < {}".format(-0.9)).count()
+        #     num_monthly_rank_neutral = num_monthly_rank - num_monthly_rank_long - num_monthly_rank_short
             
-            monthly_rank['weight'] 
-            monthly_rank_market = monthly_rank.query("market_rank_percentile > 0.67 or market_rank_percentile < 0.33")
+        #     monthly_rank['weight'] 
+        #     monthly_rank_market = monthly_rank.query("market_rank_percentile > 0.67 or market_rank_percentile < 0.33")
+
+        ###  build 1/n long portfolio to compare with etf benchmark 
 
         return "111"
     

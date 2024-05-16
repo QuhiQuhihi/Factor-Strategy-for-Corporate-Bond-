@@ -10,6 +10,16 @@ To isolate the unique returns attributed to specific factors independent of over
 
 #### $f_{t,i} = \alpha_i + \beta_{CMKT} * CMKT_{t} + \beta_{TERM} * TERM_{t} + \beta_{factor i} * FACTOR_i + \epsilon_t$
 
+## Minor issue with data and quant model
+In the academic context of fixed income securities, the observed premium of on-the-run (OTR) bonds over off-the-run (OTR) bonds is a well-documented phenomenon, often attributed to liquidity differences and demand disparities between the two types of bonds.
+
+#### Liquidity Premium: 
+On-the-run bonds, being the most recently issued and therefore most current series of a government's debt, typically exhibit higher liquidity compared to off-the-run bonds. This higher liquidity is manifested in narrower bid-ask spreads and greater ease of trading, which is highly valued by market participants. As a result, investors are willing to accept a lower yield on OTR bonds, translating into a price premium over older, less liquid off-the-run bonds.
+
+#### Demand Dynamics:
+ On-the-run bonds also benefit from structural demand driven by benchmarking and portfolio rebalancing. Many institutional investors, such as pension funds and insurance companies, as well as investment benchmarks, prefer or require the most current issue of a bond series for their portfolios. This structural demand increases the price of on-the-run bonds, further contributing to their premium.   
+
+Our model use past 8 month data to evaluate new issued security. THis means that we are targeting off-the-run bond only. It would be great we can use quant model right after the bond is issued. Since this project is asset pricing project, we are going to use this naive model with potential issue.
 
 ## Building long-short factor construction
 And we are going to examine each bond with factor $i$. So, compute $r_{t, i}$  for each signal $i$ at time $t$. And we assume that there are High, Mid, Low segments. This allow us to cover 67% of our universe, which incorporate broader and more general trends (besides outlier in dirty datasets) values into our model than Factor Zoo project. Equation for calculating each factor $i$ follows : 

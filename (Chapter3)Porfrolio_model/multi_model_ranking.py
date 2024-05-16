@@ -76,7 +76,15 @@ class rank_multi_factor:
                 Rank() over (
                 partition by month_year
                 order by "EquityMomentum" desc
-                ) equity_mom_rank  
+                ) equity_mom_rank,
+                RANK() over (
+                PARTITION by month_year
+                order by market DESC 
+                ) market_rank,
+                RANK() over (
+                PARTITION by month_year
+                order by term DESC 
+                ) term_rank
             from coef_multi_model
             ), 
             cbm_datapoint as (
@@ -97,6 +105,8 @@ class rank_multi_factor:
             cbm_ranked_factor.default_beta_rank, 
             cbm_ranked_factor.var_rank, 
             cbm_ranked_factor.equity_mom_rank, 
+            cbm_ranked_factor.market_rank, 
+            cbm_ranked_factor.term_rank, 
             cast(cbm_ranked_factor.dur_rank as float)/cbm_datapoint.total_num as dur_rank_percentile,
             cast(cbm_ranked_factor.csp_rank as float)/cbm_datapoint.total_num as csp_rank_percentile,
             cast(cbm_ranked_factor.ytm_rank as float)/cbm_datapoint.total_num as ytm_rank_percentile,
@@ -107,7 +117,9 @@ class rank_multi_factor:
             cast(cbm_ranked_factor.pbr_rank as float)/cbm_datapoint.total_num as pbr_rank_percentile,
             cast(cbm_ranked_factor.default_beta_rank as float)/cbm_datapoint.total_num as default_beta_rank_percentile,
             cast(cbm_ranked_factor.var_rank as float)/cbm_datapoint.total_num as var_rank_percentile,
-            cast(cbm_ranked_factor.equity_mom_rank as float)/cbm_datapoint.total_num as equity_mom_rank_percentile
+            cast(cbm_ranked_factor.equity_mom_rank as float)/cbm_datapoint.total_num as equity_mom_rank_percentile,
+            cast(cbm_ranked_factor.market_rank as float)/cbm_datapoint.total_num as market_rank_percentile,
+            cast(cbm_ranked_factor.term_rank as float)/cbm_datapoint.total_num as term_rank_percentile,
         from cbm_ranked_factor
         inner join cbm_datapoint
         on cbm_ranked_factor.month_year = cbm_datapoint.month_year

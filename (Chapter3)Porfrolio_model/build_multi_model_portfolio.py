@@ -31,6 +31,8 @@ class portfolio_multi:
         self.df_multi_rank['default_beta_signal'] = 0
         self.df_multi_rank['var_signal'] = 0
         self.df_multi_rank['equity_mom_signal'] = 0
+        self.df_multi_rank['term_signal'] = 0
+        self.df_multi_rank['market_signal'] = 0
 
         self.month_year_multi_rank = self.df_multi_rank['month_year'].unique()
         print(self.month_year_multi_rank)
@@ -122,6 +124,15 @@ class portfolio_multi:
         # equity momentum signal if rank is bottom 33%
         self.df_multi_rank['equity_mom_signal'].apply((lambda x: -1 if x > 0.66 else x))
 
+        # long market signal if rank is top 33%
+        self.df_multi_rank['market_signal'].apply((lambda x: 1 if x < 0.33 else x))
+        # short market signal if rank is bottom 33%
+        self.df_multi_rank['market_signal'].apply((lambda x: -1 if x > 0.66 else x))
+
+        # long term signal if rank is top 33%
+        self.df_multi_rank['term_signal'].apply((lambda x: 1 if x < 0.33 else x))
+        # short term signal if rank is bottom 33%
+        self.df_multi_rank['term_signal'].apply((lambda x: -1 if x > 0.66 else x))
 
         ###  build 1/n long and short portfolio to check whether this strategy works --> have to update for multi factor setting
         # self.df_base_portfolio_weight = pd.DataFrame()

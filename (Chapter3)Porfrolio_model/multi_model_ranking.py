@@ -93,7 +93,7 @@ class rank_multi_factor:
             group by month_year 
             order by month_year
         )
-        select cbm_ranked_factor.month_year, cbm_datapoint.total_num,
+        select cbm_ranked_factor.cusip_id,cbm_ranked_factor.month_year, cbm_datapoint.total_num,
             cbm_ranked_factor.dur_rank, 
             cbm_ranked_factor.csp_rank, 
             cbm_ranked_factor.ytm_rank, 

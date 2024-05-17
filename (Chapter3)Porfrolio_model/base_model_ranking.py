@@ -14,7 +14,7 @@ class rank_base_factor:
         self.eval_date = '20240501'
         print("current dir is : ", os.getcwd())
         self.current_dir = os.getcwd()
-        self.main_dir = os.path.join("C:\\", 'workspace', 'Factor-Strategy-for-Corporate-Bond-')
+        self.main_dir = os.path.join("/Users/purveshjain/Desktop/Optimization Project", 'Factor-Strategy-for-Corporate-Bond-')
         print("main dir is : ", self.main_dir)
         self.data_dir = os.path.join(self.main_dir, "(Chapter1)Data")
         print("data dir is : ", self.data_dir)
@@ -48,7 +48,7 @@ class rank_base_factor:
                     group by month_year 
                     order by month_year
                 )
-                select cbm_ranked_factor.month_year, cbm_ranked_factor.market_rank, cbm_ranked_factor.term_rank, cbm_datapoint.total_num,
+                select cbm_ranked_factor.cusip_id,cbm_ranked_factor.month_year, cbm_ranked_factor.market_rank, cbm_ranked_factor.term_rank, cbm_datapoint.total_num,
                     cast(cbm_ranked_factor.market_rank as float)/cbm_datapoint.total_num as market_rank_percentile,
                     cast(cbm_ranked_factor.term_rank as float)/cbm_datapoint.total_num as term_rank_percentile
                 from cbm_ranked_factor

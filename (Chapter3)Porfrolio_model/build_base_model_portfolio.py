@@ -20,12 +20,15 @@ class portfolio_base:
         self.df_base_rank = rank_base_factor().run()
         self.df_base_rank['market_signal'] = 0
         self.df_base_rank['term_signal'] = 0
+        print("__init__")
+        print(self.df_base_rank.columns)
 
         self.month_year_base_rank = self.df_base_rank['month_year'].unique()
+        print("month_year_base_rank")
         print(self.month_year_base_rank)
 
         print("current dir is : ", os.getcwd())
-        self.main_dir = os.path.join("C:\\", 'workspace', 'Factor-Strategy-for-Corporate-Bond-')
+        self.main_dir = os.path.join("/Users/purveshjain/Desktop/Optimization Project",'Factor-Strategy-for-Corporate-Bond-')
         print("main dir is : ", self.main_dir)
         self.data_dir = os.path.join(self.main_dir, "(Chapter1)Data")
         print("data dir is : ", self.data_dir)
@@ -51,10 +54,11 @@ class portfolio_base:
         print("market factor is loaded")
         column_headers = [description[0] for description in cursor.description]
         df_base_bond_return=pd.DataFrame(df,columns=column_headers)
-        print(df_base_bond_return)
+        # print("load_liquid_bond_return")
+        # print(df_base_bond_return.columns)
         return df_base_bond_return
 
-    def build_portfolio(self):
+    def build_portfolio_old(self):
         
         # long market signal if rank is top 33%
         self.df_base_rank['market_signal'].apply((lambda x: 1 if x < 0.33 else x))
@@ -66,21 +70,106 @@ class portfolio_base:
         # short term signal if rank is bottom 33%
         self.df_base_rank['term_signal'].apply((lambda x: -1 if x > 0.66 else x))
 
-        ###  build 1/n long and short portfolio to check whether this strategy works 
-        # self.df_base_portfolio_weight = pd.DataFrame()
-        # for yyyy_mm in self.month_year_base_rank:
-        #     monthly_rank = self.df_base_rank.query("month_year == '{}'".format(yyyy_mm))
-        #     num_monthly_rank = monthly_rank.count()
-        #     num_monthly_rank_long = monthly_rank.query("market_signal > {}".format(0.9)).count()
-        #     num_monthly_rank_short = monthly_rank.query("market_signal < {}".format(-0.9)).count()
-        #     num_monthly_rank_neutral = num_monthly_rank - num_monthly_rank_long - num_monthly_rank_short
+        # self.df_base_rank['integrated_signal']=self.df_base_rank['market_signal']+self.df_base_rank['term_signal']
+
+        ##  build 1/n long and short portfolio to check whether this strategy works 
+        self.df_base_portfolio_weight = pd.DataFrame()
+        for yyyy_mm in self.month_year_base_rank:
+            monthly_rank = self.df_base_rank.query("month_year == '{}'".format(yyyy_mm))
+            num_monthly_rank = monthly_rank.count()
+            num_monthly_rank_long = monthly_rank.query("market_signal > {}".format(0.9)).count()
+            num_monthly_rank_short = monthly_rank.query("market_signal < {}".format(-0.9)).count()
+            num_monthly_rank_neutral = num_monthly_rank - num_monthly_rank_long - num_monthly_rank_short
             
-        #     monthly_rank['weight'] 
-        #     monthly_rank_market = monthly_rank.query("market_rank_percentile > 0.67 or market_rank_percentile < 0.33")
+            monthly_rank['weight'] 
+            monthly_rank_market = monthly_rank.query("market_rank_percentile > 0.67 or market_rank_percentile < 0.33")
 
         ###  build 1/n long portfolio to compare with etf benchmark 
-
+        # print(self.df_base_rank.head())
         return "111"
+
+    def calculate_portfolio_returns(self):
+        # First, let's ensure the data is merged appropriately
+        # self.df_base_portfolio_weight = self.build_portfolio()  # Assuming build_portfolio returns the portfolio weights DataFrame
+
+        # Initialize a DataFrame to store portfolio returns
+        portfolio_monthly_returns = pd.DataFrame(columns=['month_year', 'portfolio_return_market','portfolio_return_term'])
+
+        for yyyy_mm in self.month_year_base_rank:
+            # Get the signals and weights for the current month
+            current_month_signals = self.df_base_portfolio_weight[self.df_base_portfolio_weight['month_year'] == yyyy_mm]
+
+            # Load bond returns for the next month
+            next_month = pd.to_datetime(yyyy_mm) + pd.DateOffset(months=1)
+            next_month = next_month.strftime('%Y-%m')  # Convert to string format YYYY-MM
+            if next_month in self.month_year_base_rank:  # Ensure we have return data for the next month
+                next_month_returns = self.load_liquid_bond_return(cusip_ids = ['001055AC6','001055AD4','001055AE2'], month_year = '2014-12')
+                
+                # Merge signals with next month's returns
+                merged_data = pd.merge(current_month_signals, next_month_returns, on='cusip_id', how='left', suffixes=('', '_next'))
+
+                # Calculate the weighted returns
+                merged_data['weighted_returns_market'] = merged_data['market_weight'] * merged_data['log_returns']
+                merged_data['weighted_returns_term'] = merged_data['term_weight'] * merged_data['log_returns']
+                monthly_return_market = merged_data['weighted_returns_market'].sum()
+                monthly_return_term = merged_data['weighted_returns_term'].sum()
+
+                # Store the results
+                new_row = pd.DataFrame({
+                    'month_year': [next_month],
+                    'portfolio_return_market': [monthly_return_market],
+                    'portfolio_return_term': [monthly_return_term]
+                })
+                portfolio_monthly_returns = pd.concat([portfolio_monthly_returns, new_row], ignore_index=True)
+
+
+        return portfolio_monthly_returns
+
+    def build_portfolio(self):
+        # Assign long and short signals based on market_signal rankings
+        self.df_base_rank.loc[self.df_base_rank['market_signal'] < 0.33, 'market_signal'] = 1  # Long market signal if rank is top 33%
+        self.df_base_rank.loc[self.df_base_rank['market_signal'] > 0.66, 'market_signal'] = -1  # Short market signal if rank is bottom 33%
+        self.df_base_rank['market_signal'] = self.df_base_rank['market_signal'].apply(lambda x: 0 if (x != 1 and x != -1) else x)
+        
+        # Assign long and short signals based on term_signal rankings
+        self.df_base_rank.loc[self.df_base_rank['term_signal'] < 0.33, 'term_signal'] = 1  # Long term signal if rank is top 33%
+        self.df_base_rank.loc[self.df_base_rank['term_signal'] > 0.66, 'term_signal'] = -1  # Short term signal if rank is bottom 33%
+        self.df_base_rank['term_signal'] = self.df_base_rank['term_signal'].apply(lambda x: 0 if (x != 1 and x != -1) else x)
+
+        # Initialize portfolio weights DataFrame
+        self.df_base_portfolio_weight = pd.DataFrame()
+
+        for yyyy_mm in self.month_year_base_rank:
+            monthly_rank = self.df_base_rank[self.df_base_rank['month_year'] == yyyy_mm]
+            # Calculate weights for long and short positions
+            long_weights_market = monthly_rank[monthly_rank['market_signal'] == 1]['market_signal'].count()
+            short_weights_market = monthly_rank[monthly_rank['market_signal'] == -1]['market_signal'].count()
+            neutral_weights_market= monthly_rank[monthly_rank['market_signal'] == 0]['market_signal'].count()
+
+            # Calculate weights for long and short positions
+            long_weights_term = monthly_rank[monthly_rank['term_signal'] == 1]['term_signal'].count()
+            short_weights_term = monthly_rank[monthly_rank['term_signal'] == -1]['term_signal'].count()
+            neutral_weights_term= monthly_rank[monthly_rank['term_signal'] == 0]['term_signal'].count()
+
+            # Assign equal weights to each section of the portfolio
+            monthly_rank.loc[monthly_rank['market_signal'] == 1, 'market_weight'] = 1 / long_weights_market if long_weights_market > 0 else 0
+            monthly_rank.loc[monthly_rank['market_signal'] == -1, 'market_weight'] = -1 / short_weights_market if short_weights_market > 0 else 0
+            monthly_rank.loc[monthly_rank['market_signal'] == 0, 'market_weight'] = 0  # Optionally, assign zero weight to neutral signals
+
+            # Assign equal weights to each section of the portfolio
+            monthly_rank.loc[monthly_rank['term_signal'] == 1, 'term_weight'] = 1 / long_weights_term if long_weights_term > 0 else 0
+            monthly_rank.loc[monthly_rank['term_signal'] == -1, 'term_weight'] = -1 / short_weights_term if short_weights_term > 0 else 0
+            monthly_rank.loc[monthly_rank['term_signal'] == 0, 'term_weight'] = 0  # Optionally, assign zero weight to neutral signals
+
+
+            self.df_base_portfolio_weight = pd.concat([self.df_base_portfolio_weight, monthly_rank], ignore_index=True)
+        portfolio_monthly_returns=self.calculate_portfolio_returns()
+        # self.calculate_portfolio_returns()
+        return portfolio_monthly_returns
+
+    
+
+
     
     def run(self):
 
@@ -93,4 +182,7 @@ if __name__ == '__main__':
         cusip_ids = ['001055AC6','001055AD4','001055AE2'],
         month_year = '2014-12'
     )
-    run.build_portfolio()
+    pf=run.build_portfolio()
+    print(pf.head())
+    pf.to_csv("Backtest_Check.csv")
+    # run.calculate_portfolio_returns

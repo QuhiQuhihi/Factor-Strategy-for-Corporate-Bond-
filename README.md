@@ -1,83 +1,72 @@
-# Multi Factor Model for Corporate Bond
-This research project is to build multi-factor model and optimization tools for corporate bond (credit market) market using empirical data. Traditional factor models including value-momentum showed explanability in asset pricing model across various asset classes. [(5)](https://www.aqr.com/Insights/Research/White-Papers/Long-Only-Style-Investing). Ever since CAPM and Famma French factor model are introduced, there were a lot of attempts to explain equity return and collective study proved that these risk factors are eithter useful, useless, or redundant to span cross-sectional equity return. [(6)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4605976)
+# Corporate Bond Factors: Replication, Equity Signals, and Implementation Risk
 
-Unlike equity market, there are not so many attempts to breakdown risk premium of credit bonds. Prominent research by Bai, Bali and Wen (2019) [(8)](https://www.sciencedirect.com/science/article/pii/S0304405X18302095) suggested common risk factors in cross-sectional return of corporate bond marekt. However, this research is retracted from Journal of Financial Econometrics in 2023 as subsequent research conducted by Dickerson, Mueller and Robotti (2023) [(9)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4398449) using a similar dataset of corporate bond returns reveals an error present in the data used by Bai et al. (2019) that consists of temporal misalignment of different data series.
+**An empirical research study of whether issuer equity signals improve corporate bond factor portfolios.**
 
- When expanding multi factor asset pricing model into fixed income market, the market shows its inherit incompleteness and proves multiple risk premium. For example, it is possible for one company to issue various bonds by setting differnt maturity, covenant, and collateral while there is one type of equity (besides prefered equity) This makes traders in credit market to consider multiple aspects with limited data. Also, structures embedded in fixed income securities, such as trench and secured, make valuation and execution difficult.  
+I compare bond credit spread, momentum, and low volatility with issuer equity momentum, value, and profitability. The study uses publicly released factor returns, independently reproduces the authors' database comparison, and tests a fixed six-signal extension.
 
+## Findings
 
-## [Chapter 1 About Data](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter1)Data/README.md)
-This section is about the data sources and methodologies employed in our research project, emphasizing the integration of corporate bond trade data from the Trade Reporting and Compliance Engine (TRACE) database, managed by the Securities and Exchange Commission (SEC), and financial ratio data from Wharton Research Data Services (WRDS). The mandatory reporting requirement of corporate bond trades in TRACE offers rich insights into market dynamics, essential for constructing robust factor models.
+The combined strategy does **not** establish reliable incremental alpha. Equity signals reduce volatility in this specification, but the average-return improvement is statistically inconclusive and the later evaluation period is negative.
 
-Corporate bond data pose inherent complexities due to several factors: (i) a single company may have multiple bonds outstanding, often exceeding 100; (ii) the inventory of these bonds varies over time; and (iii) bond series can be illiquid with numerous anomalies in the data set, both erroneous and real. Addressing these challenges was a critical task in our project. We implemented rigorous filters to eliminate known data inaccuracies, followed by a meticulous manual review of extreme outliers. This method ensured the exclusion of errors while preserving data points that represent genuine economic events, thus maintaining high data integrity for subsequent modeling.
+| Strategy | Annual mean | Annual volatility | Sharpe | Market + TERM alpha | Alpha p-value |
+|---|---:|---:|---:|---:|---:|
+| Bond-only | −0.12% | 3.47% | −0.03 | 0.54% | 0.539 |
+| Equity-derived bond factors | 0.37% | 2.18% | 0.17 | 0.68% | 0.182 |
+| Combined, 50/50 | 0.13% | 2.53% | 0.05 | 0.61% | 0.343 |
 
-Moreover, the project leverages the WRDS database for corporate-level data, widely acknowledged and utilized within the academic community. This integration was crucial, albeit the project did not evaluate the database's internal consistency, instead directly incorporating its data into our model.
+*Computed here: 231 months, September 2002–November 2021; DFPS TRACE-derived returns; annualized arithmetic means and alphas; six-lag Newey–West inference; gross of costs. These are long–short factor returns per unit of long-side notional, not returns on a funded long-only portfolio. Benchmark and signal provenance are explained in [Data](%28Chapter1%29Data/README.md).*
 
-In summary, our project effectively constructed a comprehensive dataset for the asset pricing model, encapsulating significant nuances of the corporate bond market. Further details on the database structure and the data cleaning processes are elaborated upon in the subsequent sections of this paper.
+Three results determine the interpretation:
 
-## [Chapter 2 Simple Factor Model for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter2)Factor_model/README.md)
-This section delves into the methodologies employed in the robust factor construction and regression analysis of corporate bond returns. Addressing replication failures in previous studies, a new framework utilizing clean data and rigorous statistical methods is proposed. The methodologies discussed include regression analysis of factor returns, long-short factor portfolio construction, robust factor construction techniques, and multiple testing corrections. The application of these methodologies aims to provide a more reliable framework for analyzing corporate bond returns, enhancing the reproducibility and validity of financial research in corporate bond markets.
+- **Replication:** all 4,092 statistics in the authors' 341-factor database-comparison table match to numerical precision.
+- **Factor direction:** using the source's oriented returns gives the combined portfolio a Sharpe of **0.66**. Restoring the economic directions specified before inspection reduces it to **0.05**. The first number is a diagnostic of orientation choices, not an alternative successful strategy.
+- **Later evaluation:** February 2016–November 2021 produces a **−0.46%** annual mean for the combined portfolio. The conclusion is similar under the alternative OSBAP and ICE return files.
 
-## [Chapter 3 Portfolio for credit](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter3)Porfrolio_model/README.md)
-This chapter discusses the advantages of integrating various investment styles in long-only credit portfolios, compared to merely mixing them. This integration aims to enhance portfolio performance by capitalizing on the interactions between different styles. It contrasts the traditional mixed portfolio approach, where separate portfolios are simply combined, with an integrated approach that constructs portfolios through a unified strategy, resulting in higher returns and reduced costs. The empirical results favor the integrated approach, showing it offers better excess and risk-adjusted returns.
+![Cumulative factor P&L](research/figures/cumulative_pnl.png)
 
-## [Chapter 4 Evaluating Performance](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/blob/main/(Chapter4)Evaluation/README.md)
+## Research contribution
 
-## [Chapter 5 Possible Application](https://github.com/QuhiQuhihi/Factor-Strategy-for-Corporate-Bond-/tree/main/(Chapter5)Application)
-## Reference 
+This project demonstrates the research process through inspectable work:
 
-### (1) The Corporate Bond Factor Zoo
-#### [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4589786) [data](https://openbondassetpricing.com/)
-: This paper propose explanability of corporate bond return using various factors in bond, equity, macro, and fundamental data. 
+1. **Reproduce before extending.** Reconcile source statistics, dates, units, factor signs, and data vintages.
+2. **Connect equity and credit.** Evaluate issuer information through bond portfolios rather than treating equity-factor returns as bond returns.
+3. **Test incremental value.** Compare fixed combinations, factor correlations, market and Treasury exposures, uncertainty, and chronological stability.
+4. **Interpret implementation limits.** Distinguish gross factor evidence from an executable strategy, including costs, liquidity, shorting, and unavailable holdings.
 
-### (2) AQR Corporate Bond Factors: Replication Failures and a New Framework
-#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4586652) [data](https://www.stolborg.com/data)  
-: This paper deal with replication failure of Corporate Bond Factor Zoo by Dickerson, Alexander and Julliard, Christian and Mueller, Philippe, The Corporate Bond Factor Zoo (October 2, 2023). 
+The original project explored Python/SQL processing of corporate bond data, rolling factor models, and ETF benchmarks. The current study replaces its incomplete empirical narrative with a documented public-data replication and extension. Original scripts remain as historical research; they are not the source of the results above. External researchers receive credit for their datasets, source portfolios, and reused legacy processing code.
 
-### (3) Vanguard’s portfolio construction framework
-#### [paper](https://corporate.vanguard.com/content/dam/corp/research/pdf/vanguards_portfolio_construction_framework.pdf)
-: This paper propose basic investing priciples and corresponding custom portfolio building. Our project review whether our proposed poftfolio strategy follows this protocol.
+## Read the study
 
-### (4) Long-Only Style Investing: Don't Just Mix, Integrate 
-#### [paper](https://www.aqr.com/Insights/Research/White-Papers/Long-Only-Style-Investing)
-: This paper propose multi-factor integrated portfolio building strategy. Since traditional multi-factor merely mix multiple factors, overall portfolio was close to suboptimal. But integrated multi factor portfolio shows better and optimal portfolio.
+| Chapter | Research question |
+|---|---|
+| [1. Data](%28Chapter1%29Data/README.md) | What exactly is observed, and what does TRACE provenance establish? |
+| [2. Factors and evidence](%28Chapter2%29Factor_model/README.md) | Which hypotheses are tested, and what is reproduced? |
+| [3. Portfolio construction](%28Chapter3%29Porfrolio_model/README.md) | How do bond-only, equity-derived, and combined strategies differ? |
+| [4. Evaluation](%28Chapter4%29Evaluation/README.md) | Do the findings survive inference, later periods, and source changes? |
+| [5. Applications](%28Chapter5%29Application/README.md) | What can a credit researcher use, and what remains unproven? |
 
-### (5) Value Momentum Everywhere
-#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2174501)
-: This paper studies the returns to value and momentum strategies jointly across eight diverse markets and asset classes. Implication derived from empirical data from fixed income and credit market is led our research project to come up with advanced multi-factor asset pricing model.
+[Combined research notebook](Combined_README.ipynb) · [Protocol](research/PROTOCOL.md) · [Source register](research/SOURCES.md) · [Exact result tables](research/results/) · [Calculation script](research/run_study.py)
 
-### (6) Factor Zoo (.zip)
-#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4605976)
-: This paper collects cross-sectional stock return analysis, which are proposed in asset pricing academia.  The paper explore how much this ‘factor zoo’ can be compressed, focusing on explaining the available alpha rather than the covariance matrix of factor returns and suggest that about 15 factors are enough to span the entire factor zoo. 
+## Reproduce the research
 
-### (7) Taming the Factor Zoo
-#### [paper](https://www.aqr.com/About-Us/AQR-Insight-Award/2018/Taming-the-Factor-Zoo)
-: This paper propose
+In WSL/Linux with Python 3.12 and uv:
 
-### (8) RETRACTED: Common risk factors in the cross-section of corporate bond returns☆
-#### [paper](https://www.sciencedirect.com/science/article/pii/S0304405X18302095)
-: This article has been retracted at the request of the authors. This article constructs risk factors based on the following characteristics of corporate bonds: downside risk, credit risk, and liquidity risk. The article shows that these factors have statistically significant risk premia and that they outperform other bond pricing models in explaining the returns of portfolios of corporate bonds sorted on industry, size, and maturity.
+~~~bash
+uv sync --locked
+uv run python research/download_sources.py
+uv run python research/run_study.py
+uv run python -m unittest discover -s research -p 'test_*.py' -v
+uv run python research/build_notebook.py
+~~~
 
-### (9) Priced Risk in Corporate Bonds
-#### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4398449)
-: This paper revisit recent findings of (8) and provide evidence that common factor pricing in corporate bonds is exceedingly difficult to establish. Based on portfolio- and bond-level analyses, we demonstrate that previously proposed bond risk factors, with traded liquidity as the only marginal exception, do not have any incremental explanatory power over the corporate bond market factor. Consequently, this implies that the bond CAPM is not dominated by either traded- or nontraded-factor models in pairwise and multiple model comparison tests.
+The first download needs internet access. Analysis uses cached archives, checks their recorded SHA-256 hashes, and saves tables and figures under research/results/ and research/figures/. The final command refreshes and executes the combined notebook. A failed download can be restarted; completed archives are reused. Hash mismatches require investigating a changed source release, not silently accepting new data.
 
-### (10) Bond Portfolio Optimization Using Dynamic Factor Models
-### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2079318)
-: This paper proposes an application of dynamic factor models for bond portfolio optimization. By deriving closed-form expressions for expected bond returns and their covariance matrices, it facilitates optimal mean-variance bond portfolios, including a duration-constrained variant for bond indexing. 
+The study is a research artifact, with a small environment for regenerating its evidence. It does not require the original private TRACE database. Legacy requirements.txt belongs to the earlier experiments; pyproject.toml and uv.lock govern the current study.
 
-### (11) Is 1/n Really Better than Optimal Mean-Variance Portfolio?   
-### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2530287)   
-: This paper evaluates the performance ranking of the 1/n portfolio in absolute sense. The author enumerate all possible portfolios within a specified asset universe, and compare the 1/n portfolio among all possible portfolios to find that 1/n is not really better than the average portfolio.
+## Interpretation and attribution
 
-### (12) Common factors in corporate bond returns.
-### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2576784)
-: Four well-known characteristics (carry, defensive, momentum and value) explain a significant portion of the cross-sectional variation in corporate bond excess returns. These characteristics have positive risk-adjusted expected returns and are not subsumed by traditional market premia or respective equity anomalies.
+The later segment is a chronological diagnostic, **not a pristine out-of-sample discovery test**: signals were known in the literature and historical data had already been revised. The six-signal result does not reject every corporate bond strategy, prove market efficiency, or independently reproduce the authors' underlying transaction cleaning.
 
-### (13) The cross-section of expected corporate bond returns: Betas or characteristics?
-### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=281209)
-: This paper finds that default betas are significantly related to the cross-section of average bond returns even after controlling for characteristics such as duration, ratings, and yield-to-maturity. Among characteristics, only yield-to-maturity is significantly related to average bond returns after controlling for default and term betas. The default and term factors are able to price the returns of beta-sorted portfolios better than they do the returns of yield-sorted portfolios.  
+Primary sources include [Dick-Nielsen et al., replication framework](https://www.aqr.com/insights/research/working-paper/corporate-bond-factors-replication-failures-and-a-new-framework), [Open Source Bond Asset Pricing data](https://openbondassetpricing.com/machine-learning-data/), and the literature documented in the [source register](research/SOURCES.md). External data retain their own terms; see [data attribution](research/DATA_NOTICE.md).
 
-### (14) Momentum in Corporate Bond Returns
-### [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1651853)
-: This paper analyze momentum factor's impact to corporate bond return including investment grade and non-investment grade (high yield). Momentum is driven by non-investment grade (NIG) bonds. Momentum profits have increased over time along with the growth of this segment. Momentum profits do not appear to compensate for risk or persist as a result of trading frictions. Bond momentum is not just a manifestation of equity momentum.
+Research revision: 15 September 2026. Historical data coverage ends in 2021 for the common comparison; this is not a current-market backtest.

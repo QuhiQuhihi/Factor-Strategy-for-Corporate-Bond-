@@ -1,0 +1,24 @@
+{
+  "primary": "DFPS TRACE-derived factor returns; ICE/BAML bond signal inputs",
+  "sample_start": "2002-09-30",
+  "sample_end": "2021-11-30",
+  "months": 231,
+  "evaluation_start": "2016-02-29",
+  "development_months": 161,
+  "evaluation_months": 70,
+  "replication": {
+    "source": "DatabaseComparison_DNR_2022.csv",
+    "factors": 341,
+    "statistics_per_factor": 12,
+    "max_absolute_error": 7.216449660063518e-16,
+    "nonmissing_comparisons": 4092
+  },
+  "hac_lags": 6,
+  "bh_family_size": 10,
+  "costs": "Uncalibrated annual hurdles, not estimated trading costs",
+  "raw_sha256": {
+    "ExcessLongShortVW_All_Databases.zip": "2cb75ff7484879255f93d90eedadf9429790b5c758f2ebf270cace30235038b0",
+    "Factor_Time_Series_LongShort.zip": "e26accd28cad99ced44d9cc491e03ed222f8cf89dc6bbd936295490d5c47339a",
+    "djm_data.zip": "c929c55dd3aaf596c2c143421b071654c8ce9b89f4ef05f609c58a14becc6288"
+  }
+}

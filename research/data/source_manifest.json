@@ -1,0 +1,38 @@
+{
+  "ExcessLongShortVW_All_Databases.zip": {
+    "url": "https://openbondassetpricing.com/wp-content/uploads/2025/07/ExcessLongShortVW_All_Databases.zip",
+    "retrieved_utc": "2026-09-15T09:21:36.353146+00:00",
+    "sha256": "2cb75ff7484879255f93d90eedadf9429790b5c758f2ebf270cace30235038b0",
+    "bytes": 2053455
+  },
+  "Factor_Time_Series_LongShort.zip": {
+    "url": "https://openbondassetpricing.com/wp-content/uploads/2024/11/Factor_Time_Series_LongShort.zip",
+    "retrieved_utc": "2026-09-15T09:21:37.057308+00:00",
+    "sha256": "e26accd28cad99ced44d9cc491e03ed222f8cf89dc6bbd936295490d5c47339a",
+    "bytes": 2094889
+  },
+  "openbond_home.html": {
+    "url": "https://openbondassetpricing.com/",
+    "retrieved_utc": "2026-09-15T09:22:49.982870+00:00",
+    "sha256": "a4a1bba029975bd796ae260c703370f78f9d3bdca9ed47a75b0884fb2a576bec",
+    "bytes": 122288
+  },
+  "delays_2025.pdf": {
+    "url": "https://www.ier.hit-u.ac.jp/Common/publication/DP/DPS-A771.pdf",
+    "retrieved_utc": "2026-09-15T09:22:50.489372+00:00",
+    "sha256": "03ec4234d513e5e49362ce58d6aeff1fef57d989c1ffde98729c4454be91fbac",
+    "bytes": 1038953
+  },
+  "priced_risk_2023.pdf": {
+    "url": "https://wrap.warwick.ac.uk/id/eprint/178961/1/WRAP-Priced-risk-corporate-bonds-23.pdf",
+    "retrieved_utc": "2026-09-15T09:22:53.727971+00:00",
+    "sha256": "d8e3aa454f28efe6c6428834da80d9a3af543873ee598b1c2dc9a38d921ab966",
+    "bytes": 749620
+  },
+  "djm_data.zip": {
+    "url": "https://openbondassetpricing.com/wp-content/uploads/2025/12/djm_data.zip",
+    "retrieved_utc": "2026-09-15T09:23:26.418984+00:00",
+    "sha256": "c929c55dd3aaf596c2c143421b071654c8ce9b89f4ef05f609c58a14becc6288",
+    "bytes": 1851457
+  }
+}

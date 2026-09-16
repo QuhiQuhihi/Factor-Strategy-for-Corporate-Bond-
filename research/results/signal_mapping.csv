@@ -1,0 +1,19 @@
+dataset,signal,source_column,family,source_sign,economic_direction,applied_multiplier
+DFPS,Credit spread,VW_18_spread,Bond,1,1,1
+DFPS,Bond momentum,VW_12_mom6*,Bond,-1,1,-1
+DFPS,Low volatility,VW_27_volatility,Bond,1,-1,-1
+DFPS,Equity momentum,VW_ret_6_1,Equity-derived,1,1,1
+DFPS,Equity value,VW_be_me,Equity-derived,1,1,1
+DFPS,Equity profitability,VW_gp_at*,Equity-derived,-1,1,-1
+OSBAP,Credit spread,VW_18_spread,Bond,1,1,1
+OSBAP,Bond momentum,VW_12_mom6*,Bond,-1,1,-1
+OSBAP,Low volatility,VW_27_volatility,Bond,1,-1,-1
+OSBAP,Equity momentum,VW_ret_6_1,Equity-derived,1,1,1
+OSBAP,Equity value,VW_be_me,Equity-derived,1,1,1
+OSBAP,Equity profitability,VW_gp_at*,Equity-derived,-1,1,-1
+ICE,Credit spread,VW_18_spread,Bond,1,1,1
+ICE,Bond momentum,VW_12_mom6*,Bond,-1,1,-1
+ICE,Low volatility,VW_27_volatility,Bond,1,-1,-1
+ICE,Equity momentum,VW_ret_6_1,Equity-derived,1,1,1
+ICE,Equity value,VW_be_me,Equity-derived,1,1,1
+ICE,Equity profitability,VW_gp_at*,Equity-derived,-1,1,-1

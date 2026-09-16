@@ -1,0 +1,49 @@
+sample,strategy,annual_hurdle_bps,annual_mean_after_hurdle_pct
+Full,Bond-only,0,-0.11602492645833179
+Full,Bond-only,100,-1.1160249264583317
+Full,Bond-only,200,-2.1160249264583317
+Full,Bond-only,400,-4.116024926458332
+Full,Equity-derived,0,0.3729650864331114
+Full,Equity-derived,100,-0.6270349135668887
+Full,Equity-derived,200,-1.6270349135668887
+Full,Equity-derived,400,-3.6270349135668885
+Full,Combined,0,0.12847007998738977
+Full,Combined,100,-0.8715299200126102
+Full,Combined,200,-1.8715299200126103
+Full,Combined,400,-3.8715299200126103
+Development,Bond-only,0,0.06927556911515725
+Development,Bond-only,100,-0.9307244308848428
+Development,Bond-only,200,-1.9307244308848428
+Development,Bond-only,400,-3.9307244308848426
+Development,Equity-derived,0,0.6992581600863773
+Development,Equity-derived,100,-0.3007418399136227
+Development,Equity-derived,200,-1.3007418399136226
+Development,Equity-derived,400,-3.3007418399136226
+Development,Combined,0,0.38426686460076726
+Development,Combined,100,-0.6157331353992328
+Development,Combined,200,-1.6157331353992328
+Development,Combined,400,-3.615733135399233
+Evaluation,Bond-only,0,-0.5422160662773561
+Evaluation,Bond-only,100,-1.542216066277356
+Evaluation,Bond-only,200,-2.542216066277356
+Evaluation,Bond-only,400,-4.542216066277356
+Evaluation,Equity-derived,0,-0.37750898296940066
+Evaluation,Equity-derived,100,-1.3775089829694007
+Evaluation,Equity-derived,200,-2.3775089829694007
+Evaluation,Equity-derived,400,-4.377508982969401
+Evaluation,Combined,0,-0.4598625246233782
+Evaluation,Combined,100,-1.4598625246233783
+Evaluation,Combined,200,-2.4598625246233783
+Evaluation,Combined,400,-4.459862524623378
+2013–2023 overlap,Bond-only,0,0.41663366836339366
+2013–2023 overlap,Bond-only,100,-0.5833663316366063
+2013–2023 overlap,Bond-only,200,-1.5833663316366064
+2013–2023 overlap,Bond-only,400,-3.5833663316366064
+2013–2023 overlap,Equity-derived,0,0.19841181319794648
+2013–2023 overlap,Equity-derived,100,-0.8015881868020536
+2013–2023 overlap,Equity-derived,200,-1.8015881868020536
+2013–2023 overlap,Equity-derived,400,-3.8015881868020536
+2013–2023 overlap,Combined,0,0.3075227407806701
+2013–2023 overlap,Combined,100,-0.6924772592193299
+2013–2023 overlap,Combined,200,-1.6924772592193298
+2013–2023 overlap,Combined,400,-3.69247725921933

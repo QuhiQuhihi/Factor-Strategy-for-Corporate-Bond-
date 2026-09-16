@@ -1,0 +1,7 @@
+signal,source_column,family,source_sign,economic_direction,applied_multiplier
+Credit spread,VW_18_spread,Bond,1,1,1
+Bond momentum,VW_12_mom6*,Bond,-1,1,-1
+Low volatility,VW_27_volatility,Bond,1,-1,-1
+Equity momentum,VW_ret_6_1,Equity-derived,1,1,1
+Equity value,VW_be_me,Equity-derived,1,1,1
+Equity profitability,VW_gp_at*,Equity-derived,-1,1,-1

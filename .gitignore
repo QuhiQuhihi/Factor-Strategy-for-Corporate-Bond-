@@ -1,5 +1,7 @@
 # data file
 /data/TRACE.db
+/research/data/raw/
+/research/preview/
 
 /test_Result.csv
 /bond_liquid_cusip_result.csv

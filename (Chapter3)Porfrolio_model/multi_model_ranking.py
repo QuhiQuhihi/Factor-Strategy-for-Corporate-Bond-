@@ -14,7 +14,7 @@ class rank_multi_factor:
         self.eval_date = '20240501'
         print("current dir is : ", os.getcwd())
         self.current_dir = os.getcwd()
-        self.main_dir = os.path.join("C:\\", 'workspace', 'Factor-Strategy-for-Corporate-Bond-')
+        self.main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         print("main dir is : ", self.main_dir)
         self.data_dir = os.path.join(self.main_dir, "(Chapter1)Data")
         print("data dir is : ", self.data_dir)

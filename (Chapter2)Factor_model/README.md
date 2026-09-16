@@ -4,7 +4,9 @@
 
 ## Research hypotheses
 
-The analysis asks whether familiar equity information adds useful variation to bond signals:
+The main question is **whether issuer equity information adds positive conditional
+alpha beyond existing bond signals**. A portfolio average alone cannot answer this:
+it can conceal offsetting signals and changes in risk. The initial hypotheses remain:
 
 1. Credit spreads, past bond returns, and bond volatility may capture different credit exposures.
 2. Issuer equity momentum, valuation, and profitability may contain information relevant to creditors.
@@ -25,7 +27,11 @@ These are hypotheses, not assertions that high characteristic values always earn
 
 Bond definitions follow [Factor Investing with Delays, Table A.1](https://www.ier.hit-u.ac.jp/Common/publication/DP/DPS-A771.pdf). Volatility uses a window expanding from 12 observations to 36. Equity definitions follow [Global Factor Data documentation](https://jkpfactors-data.s3.amazonaws.com/documents/Documentation.pdf), including ret_6_1, be_me, and gp_at.
 
-The [protocol](../research/PROTOCOL.md) fixed the concepts and economic directions before performance inspection. Low volatility is a deliberately tested defensive hypothesis, not a recommendation to reverse the observed high-volatility premium.
+The [initial protocol](../research/PROTOCOL.md) records these concepts and economic
+directions; no independently timestamped preregistration is established by this working
+tree. Low volatility is a deliberately tested defensive hypothesis, not a recommendation
+to reverse the observed high-volatility premium. The 16 September diagnostics were
+added after the original results were inspected and are explicitly exploratory.
 
 ### Recovering factor direction
 
@@ -82,3 +88,32 @@ OLS uses the full stated sample or segment, with Newey–West covariance, six la
 Benjamini–Hochberg q-values are computed separately for ten mean tests, ten market-alpha tests, and ten market-plus-TERM-alpha tests within each dataset/segment. Correlated factors and multiple sensitivity exercises mean these are defined-family adjustments, not a universal correction for all research choices.
 
 The current regressions have adequate observations and check design-matrix rank. They supersede the legacy per-bond regression using nine observations for thirteen factors plus an intercept.
+
+## New question: incremental information conditional on bond factors
+
+For each equity-derived bond factor and their equal-weight composite, estimate:
+
+~~~math
+E_{j,t}=\alpha_j+\gamma_{1j}f_{spread,t}+\gamma_{2j}f_{bondmom,t}
++\gamma_{3j}f_{lowvol,t}+\beta_{Mj}MKTB_t+\beta_{Tj}TERM_t+\epsilon_{j,t}.
+~~~
+
+The composite is the primary target; the three components explain its result.
+The mechanism hypothesis is that issuer information contains credit-relevant variation
+beyond these bond portfolios. A nonzero intercept is conditional evidence against this
+particular linear return model, not proof of the mechanism, complete mean-variance
+spanning, or a pricing error in an individual bond. Contemporaneous regression
+coefficients are estimated in each stated sample; they are not a feasible trading rule.
+
+The [amendment](../research/PROTOCOL.md) fixes HAC lags 6, with 3 and 12 as sensitivity
+checks; full, development, and evaluation segments; and all three return sources.
+BH families contain the four targets within each dataset/segment/bandwidth. The
+composite overlaps its components, so these are dependent diagnostics. No correction
+for all prior research choices is claimed.
+
+The [results](../research/results/incremental_spanning.csv) include intervals, p- and
+q-values, R², residual volatility, and a condition number after standardizing controls.
+Full-sample DFPS conditional alphas are 3.93% for equity momentum, −2.33% for value,
+and 0.20% for profitability; their average is the composite's 0.60%. The economic
+directions and original portfolio weights remain unchanged. A negative value estimate
+does not authorize turning it into a successful short-value strategy after inspection.

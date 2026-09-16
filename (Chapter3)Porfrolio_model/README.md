@@ -24,7 +24,11 @@ C_t=\frac{B_t+E_t}{2},
 \Delta_t=C_t-B_t=\frac{E_t-B_t}{2}.
 ~~~
 
-Each signal has a one-sixth weight in the combined strategy. There is no estimated expected-return model, optimized allocation, volatility target, or reweighting based on subsequent returns. Missing signals cause an error rather than a silent change in portfolio composition.
+Each signal has a one-sixth weight in the combined strategy. The original strategy
+has no estimated expected-return model, optimized allocation, volatility target, or
+reweighting based on subsequent returns. The amendment scales a separate comparison
+portfolio using prior volatility. Missing signals cause an error rather than a silent
+change in portfolio composition.
 
 The contrast Δ directly asks whether the combined portfolio improves average return over the bond-only portfolio. Comparing two Sharpe ratios by inspection does not answer that question statistically.
 
@@ -38,7 +42,38 @@ Equal signal weights therefore do not imply equal risk contributions or six inde
 
 The combined portfolio reduces annual volatility from **3.47%** for bond-only to **2.53%**. Its average-return increase is **0.24 percentage points**, with a 95% HAC interval of **−0.41 to +0.90 percentage points**. Diversification is observed; reliable incremental average return is not established.
 
-## Integration versus mixing
+## New comparison: would reducing bond exposure achieve a similar result?
+
+Lower volatility alone is an incomplete case for adding another signal family.
+Construct a control using only the preceding 60 months:
+
+~~~math
+w_t=\min\left(1,\max\left(0,\frac{\widehat\sigma(C_{t-60:t-1})}
+{\widehat\sigma(B_{t-60:t-1})}\right)\right),
+\qquad B^{control}_t=w_tB_t.
+~~~
+
+The reference notional is constant; the amount assigned to the bond sleeve varies.
+Unused notional contributes zero excess P&L. No cash yield, borrowing or collateral
+return is modeled. The cap avoids levered control weights. Forecast volatility ratios
+do not ensure equal realized volatility, so both are reported. This control is a
+diagnostic for reducing exposure, not a claim of an exactly risk-matched investable fund.
+
+The first 60 months are a warmup for **all** comparisons. The remaining 171 months
+start in September 2007; the original later segment remains February 2016–November
+2021. Locally generated `research/results/risk_control_returns_*.csv` files
+save weights, unclipped ratios and the last training date; the public tree retains
+[summary performance](../research/results/risk_control_performance.csv).
+Tests change current and
+future returns to verify that the current weight cannot change.
+
+Use paired mean differences and paired Sharpe intervals. Bootstrap draws resample
+both realized paths together in circular blocks of 6 or 12 months, retaining their
+contemporaneous dependence. The 5,000-draw percentile intervals are conditional on
+realized weights; they do not refit the rule or account for research selection and
+structural breaks. They are descriptive uncertainty checks, not a studentized test.
+
+## Security-level integration remains a different experiment
 
 This completed study tests **mixing existing factor portfolios**. A true integrated strategy would combine characteristics before selecting bonds, allowing overlapping positions to net at the security level.
 
@@ -56,8 +91,11 @@ Fees, bid–ask spreads, borrowing costs, and trade delays are absent. The [eval
 
 ## Legacy benchmarks
 
-The original ETF experiments remain in this directory with their saved outputs. Their “risk parity” function minimizes volatility and does not equalize risk contributions. Their “mean–variance” function maximizes the sample mean/volatility ratio subject to weight bounds.
+The original ETF scripts remain as historical experiments. Their saved outputs and
+notebook are excluded from the public tree. Their “risk parity” function minimizes
+volatility and does not equalize risk contributions. Their “mean–variance” function
+maximizes the sample mean/volatility ratio subject to weight bounds.
 
 Those outputs are historical diagnostics, not evidence supporting the current six-signal strategy. The current risk regressions use published MKTB and TERM series; the study does not claim a successful ETF-versus-bond portfolio contest.
 
-[Monthly strategy returns](../research/results/monthly_returns_dfps.csv) · [Construction and estimation code](../research/run_study.py)
+[Strategy summary statistics](../research/results/performance.csv) · [Construction and estimation code](../research/run_study.py)

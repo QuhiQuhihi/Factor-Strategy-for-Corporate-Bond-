@@ -91,6 +91,26 @@ extension instead uses the balanced common sample, as specified in [PROTOCOL.md]
 
 ## Why the sources can disagree
 
+### Additional methodological reference for the 16 September amendment
+
+- Ledoit and Wolf (2008), [Robust performance hypothesis testing with the Sharpe
+  ratio](https://www.ledoit.net/Robust_Sharpe_2008.pdf), *Journal of Empirical Finance*
+  15(5), 850–859. The paper motivates dependence-aware uncertainty for Sharpe
+  comparisons and proposes studentized time-series bootstrap inference. This project
+  uses a simpler paired circular-block **percentile** interval as a descriptive
+  sensitivity diagnostic. It does not implement or claim to reproduce their test.
+- The [provider's sign convention](https://openbondassetpricing.com/machine-learning-data/)
+  and [AQR's original research summary](https://www.aqr.com/insights/research/working-paper/corporate-bond-factors-replication-failures-and-a-new-framework)
+  were checked again on 16 September 2026. The former documents positive-premium
+  orientation; the latter establishes that issuer equity signals for corporate bonds
+  predate this project. No new numerical source vintage was substituted.
+
+The new conditional regressions and lagged volatility control are project calculations
+from the same archived inputs. The 50-bps materiality threshold is an illustrative
+research convention, not an empirical cost estimate from these publications.
+
+### Comparison boundaries
+
 The studies differ in periods, return providers, cleaning, execution assumptions, signal
 definitions, portfolio sorts, benchmarks, and the model being tested. A weak factor-series
 combination does not refute a broad cross-sectional pricing model. Reproducing an author

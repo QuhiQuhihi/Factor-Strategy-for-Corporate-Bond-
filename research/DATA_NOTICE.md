@@ -1,26 +1,59 @@
 # Data and code attribution
 
-The new study uses factor returns distributed through [Open Source Bond Asset Pricing](https://openbondassetpricing.com/).
+The study uses factor returns distributed through [Open Source Bond Asset Pricing](https://openbondassetpricing.com/).
 Credit for original data construction and source portfolios belongs to the cited authors,
 including Dickerson, Nozawa and Robotti; Dick-Nielsen, Feldhütter, Pedersen and Stolborg;
 and Dickerson, Julliard and Mueller. Equity characteristics originate in the sources
 identified in [SOURCES.md](SOURCES.md).
 
-Public availability does not remove source-specific terms. The co-pricing repository
-states that its data use [CC BY-NC-SA 3.0](https://github.com/Alexander-M-Dickerson/co-pricing-factor-zoo#license-for-data).
-That applies to the extracted benchmark series and relevant derivatives; the repository's
-root code license does not override it. Other factor releases retain their providers'
-terms; this project does not grant new redistribution or commercial rights over them.
+Public availability does not remove source-specific terms. On 16 September 2026 the
+co-pricing repository's [data-license statement](https://github.com/Alexander-M-Dickerson/co-pricing-factor-zoo#license-for-data)
+was checked: it specifies [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/).
+Its licensed material requires attribution, limits commercial use, and requires the
+same license for adaptations covered by that license. The root Apache code license
+does not replace these conditions. Applicability to a particular analytical output
+or intended use must be assessed separately; this notice does not treat every
+statistic as automatically licensed or exempt.
 
-Raw downloads and cached papers are excluded from Git. Small derived research tables
-are included for inspection with source provenance; consult the original provider's terms
-before redistributing them or using them commercially. No raw TRACE trades, CRSP records,
-Compustat records, credentials, or private database files are added by this revision.
+The other archived factor releases are distributed through the provider's
+[machine-learning data page](https://openbondassetpricing.com/machine-learning-data/).
+An unrestricted redistribution or commercial-use grant for those exact archives
+has not been established in this review. Do not infer one from a download link or
+from the phrase "open source."
 
-Legacy scripts under (Chapter1)Data/openbond_data_processing/ retain their author headers,
-including Alexander Dickerson. Their presence is not a claim of original authorship by
-this project's owner. The current study does not execute those scripts.
+## What the public tree includes
+
+Original analysis code, source URLs and checksums, summary statistics, original
+research figures and an executed notebook are retained for inspection. Outputs
+document filtering, orientation changes, portfolio combinations and regressions;
+these are modifications and calculations by this project, not source-author results
+unless explicitly identified as replication. No source-author endorsement is implied.
+
+Raw downloads, cached papers, extracted benchmark returns, selected monthly factor
+returns and monthly risk-control return panels are excluded from Git. Run the documented
+download and analysis commands to regenerate them locally under the provider's terms.
+This avoids bundling source-like series while preserving inspectable summary evidence;
+it does not itself resolve every permission question about that evidence.
+
+## Legacy materials and public reuse
+
+Earlier private-data notebooks, bond-level return exports, database share links,
+vendor documents and copied screenshots are excluded from the current public tree.
+Locally retained copies of upstream processing scripts, including code attributed
+to Alexander Dickerson and Francis Cong, are excluded as well. Consult the
+[upstream repository](https://github.com/Alexander-M-Dickerson/TRACE-corporate-bond-processing)
+for the original work; redistribution permission for these copied versions has not
+been established here. The current study does not execute them.
+
+Use the project's generated figures rather than the excluded newspaper/provider
+screenshots. For a monetized, sponsored or employer-owned blog, establish permission
+for the intended reuse of licensed source material and affected outputs before
+publishing them. No commercial-use clearance is claimed by this review.
+
+Tracked-file cleanup does not remove old Git commits. The historical database link,
+bond-return export and embedded notebook data require a separate history/access
+decision before exposing the existing repository. See [PUBLICATION.md](../PUBLICATION.md).
 
 The source comparison is independently recomputed from the archived inputs, following
-the authors' stated formulas. The new contribution is the fixed economic-direction
-comparison, portfolio experiment, inference, and interpretation documented in the reports.
+the authors' stated formulas. The new contribution is the economic-direction comparison,
+conditional signal analysis, portfolio controls, inference and interpretation.

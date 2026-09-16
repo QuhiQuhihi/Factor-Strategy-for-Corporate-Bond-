@@ -1,12 +1,39 @@
-# Corporate Bond Factors: Replication, Equity Signals, and Implementation Risk
+# Do Equity Signals Add to Corporate Bond Factors?
 
-**An empirical research study of whether issuer equity signals improve corporate bond factor portfolios.**
+**Incremental alpha, diversification, and the cost budget for adding issuer information.**
 
-I compare bond credit spread, momentum, and low volatility with issuer equity momentum, value, and profitability. The study uses publicly released factor returns, independently reproduces the authors' database comparison, and tests a fixed six-signal extension.
+An allocation researcher needs to know whether a new signal contributes beyond existing
+exposures, whether its diversification beats simply reducing risk, and whether the
+increment can pay for implementation. This project answers those questions using
+author-released corporate bond factor returns. It reproduces the source comparison,
+retains a fixed six-signal baseline, and adds an explicitly exploratory diagnostic study.
+
+## Research questions and answers
+
+| Question | Test implemented here | Finding |
+|---|---|---|
+| Does issuer equity information add beyond existing bond exposures? | Regress equity-derived bond returns on the three individual bond factors, MKTB and TERM | Composite alpha is inconclusive; momentum and value have opposing conditional alphas |
+| Is the combined portfolio better than simply reducing bond exposure? | Scale a bond-only control using the preceding 60 months; compare paired returns and Sharpe intervals | No clear improvement; combined underperforms that control in the later segment |
+| How much extra implementation cost can the improvement support? | Incremental mean and HAC interval in bps, with an illustrative 50-bps materiality threshold | Later mean difference is −13.71 bps/year; interval −51.62 to +24.19 bps |
+| Are conclusions sensitive to the supplied return database? | Same dates/signals across DFPS, OSBAP and ICE; paired source differences | Small combined-return differences, with strongly dependent sources |
+
+**A useful negative allocation result can coexist with a useful signal-level lead.**
+Equity momentum's DFPS conditional alpha is **3.93% annually** (95% interval
+**2.04%–5.81%**), and **2.91%** in the later segment. Equity value's full-sample
+conditional alpha is **−2.33%**. The equal-weight equity composite has **0.60%** alpha
+(**−0.10% to +1.29%**, p = **0.092**). These are gross regression intercepts conditional
+on the specified controls, not realized hedged profits. The added analyses use already
+inspected history, and cannot establish a new discovery or executable alpha.
+
+![Conditional alpha by issuer signal](research/figures/incremental_alpha.png)
+
+[Methods and exploratory amendment](research/PROTOCOL.md) · [Detailed evidence](%28Chapter4%29Evaluation/README.md) · [Next experiments](research/RESEARCH_AGENDA.md)
 
 ## Findings
 
-The combined strategy does **not** establish reliable incremental alpha. Equity signals reduce volatility in this specification, but the average-return improvement is statistically inconclusive and the later evaluation period is negative.
+The original fixed combination does **not** establish reliable incremental alpha.
+The table below retains its market-plus-TERM benchmark; the new conditional analysis
+above also controls for individual bond factors and answers a different question.
 
 | Strategy | Annual mean | Annual volatility | Sharpe | Market + TERM alpha | Alpha p-value |
 |---|---:|---:|---:|---:|---:|
@@ -19,7 +46,7 @@ The combined strategy does **not** establish reliable incremental alpha. Equity 
 Three results determine the interpretation:
 
 - **Replication:** all 4,092 statistics in the authors' 341-factor database-comparison table match to numerical precision.
-- **Factor direction:** using the source's oriented returns gives the combined portfolio a Sharpe of **0.66**. Restoring the economic directions specified before inspection reduces it to **0.05**. The first number is a diagnostic of orientation choices, not an alternative successful strategy.
+- **Factor direction:** using the source's oriented returns gives the combined portfolio a Sharpe of **0.66**. Applying the documented economic directions reduces it to **0.05**. The first number is a diagnostic of orientation choices, not an alternative successful strategy.
 - **Later evaluation:** February 2016–November 2021 produces a **−0.46%** annual mean for the combined portfolio. The conclusion is similar under the alternative OSBAP and ICE return files.
 
 ![Cumulative factor P&L](research/figures/cumulative_pnl.png)
@@ -30,20 +57,26 @@ This project demonstrates the research process through inspectable work:
 
 1. **Reproduce before extending.** Reconcile source statistics, dates, units, factor signs, and data vintages.
 2. **Connect equity and credit.** Evaluate issuer information through bond portfolios rather than treating equity-factor returns as bond returns.
-3. **Test incremental value.** Compare fixed combinations, factor correlations, market and Treasury exposures, uncertainty, and chronological stability.
-4. **Interpret implementation limits.** Distinguish gross factor evidence from an executable strategy, including costs, liquidity, shorting, and unavailable holdings.
+3. **Test incremental value.** Separate composite allocation performance from conditional signal alpha, use a control scaled with prior information, and quantify paired uncertainty.
+4. **Make a research decision.** Compare the incremental cost budget with a stated materiality threshold, diagnose precision, and specify the evidence needed for a new security-level test.
 
-The original project explored Python/SQL processing of corporate bond data, rolling factor models, and ETF benchmarks. The current study replaces its incomplete empirical narrative with a documented public-data replication and extension. Original scripts remain as historical research; they are not the source of the results above. External researchers receive credit for their datasets, source portfolios, and reused legacy processing code.
+The original project explored Python/SQL processing of corporate bond data, rolling
+factor models, and ETF benchmarks. The current study replaces its incomplete empirical
+narrative with a documented public-data replication and extension. Retained chapter
+scripts are [historical experiments](LEGACY.md), separate from the current pipeline.
+Private-data notebooks, old outputs, vendor reference copies and copied processing
+scripts are excluded from the public tree. External researchers receive credit for
+their datasets and source portfolios.
 
 ## Read the study
 
 | Chapter | Research question |
 |---|---|
 | [1. Data](%28Chapter1%29Data/README.md) | What exactly is observed, and what does TRACE provenance establish? |
-| [2. Factors and evidence](%28Chapter2%29Factor_model/README.md) | Which hypotheses are tested, and what is reproduced? |
-| [3. Portfolio construction](%28Chapter3%29Porfrolio_model/README.md) | How do bond-only, equity-derived, and combined strategies differ? |
-| [4. Evaluation](%28Chapter4%29Evaluation/README.md) | Do the findings survive inference, later periods, and source changes? |
-| [5. Applications](%28Chapter5%29Application/README.md) | What can a credit researcher use, and what remains unproven? |
+| [2. Factors and evidence](%28Chapter2%29Factor_model/README.md) | Does issuer information add conditional alpha, and which components explain it? |
+| [3. Portfolio construction](%28Chapter3%29Porfrolio_model/README.md) | Does adding signals beat reducing bond exposure using prior volatility? |
+| [4. Evaluation](%28Chapter4%29Evaluation/README.md) | What do uncertainty, cost headroom, and source differences imply? |
+| [5. Applications](%28Chapter5%29Application/README.md) | Which mechanism deserves a new security-level test? |
 
 [Combined research notebook](Combined_README.ipynb) · [Protocol](research/PROTOCOL.md) · [Source register](research/SOURCES.md) · [Exact result tables](research/results/) · [Calculation script](research/run_study.py)
 
@@ -57,11 +90,18 @@ uv run python research/download_sources.py
 uv run python research/run_study.py
 uv run python -m unittest discover -s research -p 'test_*.py' -v
 uv run python research/build_notebook.py
+uv run python research/check_artifacts.py
 ~~~
 
-The first download needs internet access. Analysis uses cached archives, checks their recorded SHA-256 hashes, and saves tables and figures under research/results/ and research/figures/. The final command refreshes and executes the combined notebook. A failed download can be restarted; completed archives are reused. Hash mismatches require investigating a changed source release, not silently accepting new data.
+The first download needs internet access. Analysis uses cached archives, checks their recorded SHA-256 hashes, and saves tables and figures under research/results/ and research/figures/. The notebook builder refreshes and executes the combined notebook; the final command independently checks key calculations and saved artifacts. A failed download can be restarted; completed archives are reused. Hash mismatches require investigating a changed source release, not silently accepting new data.
 
 The study is a research artifact, with a small environment for regenerating its evidence. It does not require the original private TRACE database. Legacy requirements.txt belongs to the earlier experiments; pyproject.toml and uv.lock govern the current study.
+
+Raw archives, extracted benchmarks and monthly return panels are generated locally
+and excluded from version control. The public repository retains summary statistics,
+original figures, source URLs/checksums and the executed notebook. See the
+[publication review](PUBLICATION.md) for the file policy, clean-export command,
+Git-history limitation and considerations for adapting the study into a blog post.
 
 ## Interpretation and attribution
 
@@ -69,4 +109,4 @@ The later segment is a chronological diagnostic, **not a pristine out-of-sample 
 
 Primary sources include [Dick-Nielsen et al., replication framework](https://www.aqr.com/insights/research/working-paper/corporate-bond-factors-replication-failures-and-a-new-framework), [Open Source Bond Asset Pricing data](https://openbondassetpricing.com/machine-learning-data/), and the literature documented in the [source register](research/SOURCES.md). External data retain their own terms; see [data attribution](research/DATA_NOTICE.md).
 
-Research revision: 15 September 2026. Historical data coverage ends in 2021 for the common comparison; this is not a current-market backtest.
+Research revision: 16 September 2026. Historical data coverage ends in 2021 for the common comparison; this is not a current-market backtest. The new diagnostics are an exploratory amendment, not a retrospectively preregistered experiment.

@@ -1,3 +1,5 @@
+# Historical experiments only; see LEGACY.md.
+# The maintained research environment is pyproject.toml + uv.lock (uv sync --locked).
 appdirs==1.4.4
 beautifulsoup4==4.12.3
 certifi==2024.2.2

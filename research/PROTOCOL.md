@@ -1,6 +1,65 @@
 # Research protocol
 
-Specified before inspecting factor performance, 15 September 2026.
+Initial specification dated 15 September 2026; exploratory amendment dated
+16 September 2026. The initial document describes choices made before its performance
+inspection, but this working tree supplies no independently timestamped preregistration.
+The amendment follows inspection of the original results. Neither is a pristine
+out-of-sample discovery test, and the amendment must not inherit that description.
+
+## Exploratory amendment: incremental information and the allocation decision
+
+The original six signals, directions, source archives, samples and 50/50 weights below
+are retained. The following diagnostics are specified before computing their new
+outputs, after the original findings were known. No winning signal or specification
+will replace the original experiment. The intended audience is systematic credit
+research; this is not a derivatives-pricing or live trading demonstration.
+
+1. **Incremental information.** Does the equity-derived bond composite have positive
+   alpha conditional on all three individual bond factors, MKTB and TERM? Estimate
+   this regression for the composite and each equity-derived signal. The composite
+   is the primary question; components diagnose it. Report full, development and
+   evaluation segments in each of DFPS, OSBAP and ICE; use HAC bandwidths 3, 6 and 12
+   with 6 primary. Report 95% pointwise intervals and BH q-values within each family
+   of four targets/dataset/segment/bandwidth. This tests benchmark-relative alpha,
+   not full mean-variance spanning, causal information flow or an executable hedge.
+2. **Diversification versus less exposure.** Compare the unchanged combined return
+   with bond-only and a bond-only control scaled by the preceding 60 months' ratio
+   of combined to bond volatility, clipped to [0, 1]. Hold its weight for month t
+   using only returns through t−1. Unused reference notional contributes zero excess
+   P&L; this is not a funded cash allocation. Exclude the 60-month warmup from every
+   comparator. Report the resulting realized volatilities and cap frequency: they
+   need not match. Report both all post-warmup months and the original evaluation
+   segment. Use paired circular-block bootstrap percentile intervals for Sharpe
+   differences (5,000 draws, seed 20260916, blocks of 6 and 12 months). These are
+   descriptive intervals conditional on realized paths and weights, assume useful
+   within-period stationarity, and are not studentized hypothesis tests. Do not
+   describe them as a replication of Ledoit–Wolf's test or as correcting selection.
+3. **Cost budget and precision.** For combined-minus-each-control returns, report
+   the annual mean in basis points with six-lag HAC intervals. This is incremental
+   constant-cost headroom, not total strategy cost capacity or observed turnover.
+   A negative estimate means no positive estimated additional-cost budget; do not
+   clip negative estimates or interval bounds. Use 50 bps/year as an illustrative
+   materiality threshold, chosen here for decision clarity, not calibrated costs.
+   An interval spanning that threshold is inconclusive, not evidence of equivalence.
+   Report an approximate 80%-power detectable effect of (1.96 + 0.8416) times the
+   annualized HAC standard error, conditional on its estimated variance remaining
+   applicable. It is a precision diagnostic, not a promised future sample size.
+4. **Measurement sensitivity.** Compare the same combined monthly returns across
+   each source pair with a paired six-lag HAC mean-difference interval. Use full
+   and evaluation periods, and BH adjustment over the three pairs within a period.
+   Shared dates, signals and inputs make these sensitivity checks dependent.
+
+The decision is whether evidence warrants a new, point-in-time security-level study.
+Positive in-sample alpha alone is insufficient. New execution data, issuer links,
+dated information, risk controls and an untouched later sample are prerequisites
+for any investability claim. No synthetic panel will substitute for them.
+
+Amendment outputs: `incremental_spanning.csv`, `risk_control_returns_*.csv`,
+`risk_control_performance.csv`, `sharpe_difference_intervals.csv`,
+`incremental_cost_budget.csv`, `paired_source_differences.csv`, and
+`incremental_metadata.json` in `research/results/`. They regenerate through
+`uv run python research/run_study.py` from the same cached, hash-verified archives;
+rerunning overwrites derived artifacts, not raw sources. No network is needed.
 
 ## Question and selection
 

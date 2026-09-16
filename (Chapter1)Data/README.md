@@ -70,6 +70,17 @@ The current analysis consumes authors' portfolio returns and does not run that l
 
 ## Files and recovery
 
+The 16 September amendment uses the same archived factor returns and benchmarks.
+Its observation remains a **factor-month**, not a bond, issuer, trade, or announcement.
+The risk-control study loses the first 60 months to its training window and compares
+all strategies over September 2007–November 2021 (171 months), or February
+2016–November 2021 (70 months). No current-month return enters its scaling weight.
+The conditional-alpha study retains the original 231-month common sample.
+
+Consequently, the new regressions cannot identify which issuers drove equity momentum,
+whether announcement information preceded a trade, or whether stale prices generated
+the effect. Those are questions for a matched panel, not missing columns to infer here.
+
 [download_sources.py](../research/download_sources.py) caches three numerical archives in research/data/raw/. Those files are ignored by Git. [run_study.py](../research/run_study.py) generates the balanced return panels and statistical outputs. All derived returns remain decimal; displayed percentages are explicitly labeled.
 
 Rerun the downloader after an interrupted transfer; it restarts the partial archive and retains completed files. Rerun the analysis from the cached files to regenerate results. Optional paper caches use the downloader's --references flag. The [source register](../research/SOURCES.md) records the publications and precise evidence used.

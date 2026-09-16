@@ -38,7 +38,7 @@ class portfolio_multi:
         print(self.month_year_multi_rank)
 
         print("current dir is : ", os.getcwd())
-        self.main_dir = os.path.join("C:\\", 'workspace', 'Factor-Strategy-for-Corporate-Bond-')
+        self.main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         print("main dir is : ", self.main_dir)
         self.data_dir = os.path.join(self.main_dir, "(Chapter1)Data")
         print("data dir is : ", self.data_dir)

@@ -1,8 +1,97 @@
-# 4. Evaluation: diversification without reliable incremental alpha
+# 4. Evaluation: distinguish signal evidence from an allocation decision
 
 [Portfolio construction](../%28Chapter3%29Porfrolio_model/README.md) · [Next: Applications](../%28Chapter5%29Application/README.md)
 
 ## Main result
+
+**The new controls support a narrower allocation conclusion and a sharper follow-up.**
+The equity composite has inconclusive alpha after conditioning on individual bond
+factors. Its components differ: momentum is positive and value negative. Combining
+all six factors has no clear advantage over reducing bond exposure. The following
+amendment results are exploratory and use history already inspected in the original
+study; the original fixed-combination results are retained below.
+
+## Conditional alpha: what the portfolio average concealed
+
+| Equity-derived target | Full alpha | 95% HAC interval | Full BH q | Later alpha | Later BH q |
+|---|---:|---:|---:|---:|---:|
+| Equal-weight composite | 0.60% | −0.10% to 1.29% | 0.123 | 0.19% | 0.522 |
+| Momentum | 3.93% | 2.04% to 5.81% | 0.00018 | 2.91% | 0.010 |
+| Value | −2.33% | −3.97% to −0.69% | 0.011 | −1.44% | 0.010 |
+| Profitability | 0.20% | −1.33% to 1.73% | 0.801 | −0.91% | 0.063 |
+
+*DFPS; full sample 231 months, later sample 70 months. Annualized gross intercepts
+conditional on credit spread, bond momentum, low volatility, MKTB and TERM. Six-lag
+HAC; four-test BH families within each segment. These differ from the market/TERM-only
+regressions below. [Exact estimates and bandwidth checks](../research/results/incremental_spanning.csv)*
+
+![Conditional issuer-signal alpha](../research/figures/incremental_alpha.png)
+
+The new benchmark changes the inference materially: equity momentum's full-sample
+q-value is 0.00018 under this model, versus 0.244 under the original market/TERM-only
+model and its different testing family. Benchmark choice and the testing family both
+matter. A favorable conditional alpha need not imply a positive standalone return or
+an executable hedge; coefficients here are estimated contemporaneously in each sample.
+This is evidence for a focused follow-up, not permission to select a winning strategy.
+
+Across DFPS, OSBAP and ICE, the composite's full conditional alpha is 0.60%, 0.43% and
+0.67%; each six-lag 95% interval includes zero. Momentum is positive and passes the
+defined 5% BH threshold in full and later samples across all three. The shared source
+inputs and reused history prevent treating this as independent discovery replication.
+
+## A control that reduces bond exposure using prior information
+
+| Period | Strategy | Annual mean | Annual volatility | Sharpe |
+|---|---|---:|---:|---:|
+| Sep 2007–Nov 2021, 171 months | Combined | −0.12% | 2.69% | −0.044 |
+| Same dates | Bond-only | −0.19% | 3.64% | −0.053 |
+| Same dates | Risk-scaled bond | −0.21% | 2.76% | −0.076 |
+| Feb 2016–Nov 2021, 70 months | Combined | −0.46% | 2.07% | −0.223 |
+| Same dates | Bond-only | −0.54% | 3.13% | −0.173 |
+| Same dates | Risk-scaled bond | −0.32% | 2.17% | −0.149 |
+
+The control uses only the preceding 60 months to set its exposure. Its average weight
+is 0.724 after warmup and 0.693 in the later segment; the cap never binds in DFPS.
+Realized risks are close, not identical. All comparison returns use the same dates
+and fixed reference notional. [Construction](../%28Chapter3%29Porfrolio_model/README.md)
+and [exact performance](../research/results/risk_control_performance.csv).
+
+Combined-minus-control Sharpe is +0.032 after warmup, with a paired six-month-block
+95% percentile interval of −0.121 to +0.192. In the later period it is −0.074
+(−0.242 to +0.109). Twelve-month-block intervals also include zero. These descriptive
+intervals assume useful within-period stationarity and condition on realized paths;
+they do not correct for selection or estimate uncertainty in a freshly refitted rule.
+[All paired Sharpe intervals](../research/results/sharpe_difference_intervals.csv).
+
+## Incremental cost budget and what the sample can distinguish
+
+| Combined minus risk-scaled bond | Incremental mean | 95% HAC interval | Approx. 80%-power detectable effect |
+|---|---:|---:|---:|
+| Post-warmup | +9.17 bps/year | −33.65 to +51.98 | 61.20 bps/year |
+| Later evaluation | −13.71 bps/year | −51.62 to +24.19 | 54.18 bps/year |
+
+The mean difference is the estimated **additional constant annual cost** the combined
+strategy could bear before losing to this control. It is separate from the original
+combined strategy's total gross break-even hurdle. Negative headroom is retained,
+not reported as zero. Neither turnover nor realized costs are observed.
+
+The amendment sets an illustrative 50-bps/year materiality threshold. The post-warmup
+interval includes it, so the result is inconclusive at that threshold. The later
+interval's upper bound is below 50 bps, although it still includes zero. Thus the
+later data do not support a 50-bps improvement under these assumptions; they do not
+prove the strategies equivalent or prove future underperformance. Detectable effects
+are normal/HAC precision approximations, not forecast sample-size guarantees.
+[Exact cost and precision calculations](../research/results/incremental_cost_budget.csv).
+
+## Paired source comparisons
+
+On the full common sample, DFPS-minus-OSBAP combined mean is −2.85 bps/year
+(95% HAC interval −19.16 to +13.46); DFPS-minus-ICE is −7.32 bps (−28.62 to +13.99).
+Combined monthly return correlations exceed 0.97 for every pair. These comparisons
+provide no clear mean-difference evidence at the chosen precision, but do not establish
+database equivalence or certify common construction choices. [Paired results](../research/results/paired_source_differences.csv).
+
+## Original fixed-combination experiment
 
 The fixed combination of bond and equity-derived signals produces a **0.13% annual arithmetic mean** and **0.05 Sharpe** over September 2002–November 2021. Its market-plus-TERM alpha is **0.61% annually**, with p = **0.343** and BH q = **0.685**. The evidence does not establish positive alpha.
 
@@ -78,8 +167,19 @@ These deductions are **uncalibrated scenarios**, not measured transaction costs.
 
 ## Validation and research boundary
 
-The author-table reproduction covers 4,092 statistics. Seven targeted checks verify economic signs, missing-factor handling, ambiguous columns, portfolio arithmetic, initial-loss drawdown treatment, rank deficiency, and Newey–West covariance against an independent matrix calculation.
+The author-table reproduction covers 4,092 statistics. Targeted tests verify economic
+signs, missing-factor handling, portfolio arithmetic, initial-loss drawdowns, rank
+deficiency, and Newey–West covariance against an independent matrix calculation.
+The amendment adds checks for current/future-return leakage, warmup and leverage caps,
+monthly alignment, conditional alpha against partial regression, paired block sampling,
+and preservation of negative cost headroom. The artifact checker independently
+reconstructs primary statistics, conditional alphas, and control weights from the archive.
 
-The analysis does not replicate every published table, prove market efficiency, estimate causal effects, or reject all equity information in credit. It rejects a strong investment claim for **this fixed six-signal combination under these data and definitions**. The resulting research conclusion is complete even though an executable security-level strategy has not been demonstrated.
+The analysis does not replicate every published table, prove market efficiency,
+estimate causal effects, or reject all equity information in credit. It does not
+support a strong investment claim for **this fixed six-signal combination under these
+data and definitions**. Positive conditional momentum evidence narrows the next
+research question; it does not change the failed allocation case into a successful
+strategy. The factor-level diagnostics are complete; execution remains untested.
 
 [Exact outputs](../research/results/) · [Tests](../research/test_study.py) · [Combined notebook](../Combined_README.ipynb)

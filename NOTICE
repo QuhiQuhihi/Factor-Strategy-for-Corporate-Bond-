@@ -1,0 +1,18 @@
+Corporate Bond Factor Research
+
+The root Apache-2.0 LICENSE applies to original project code and other material
+only to the extent the project has the rights to license it. It does not grant
+rights in third-party datasets, papers, documentation, figures or copied code.
+
+Research inputs are credited to the authors identified in research/SOURCES.md
+and research/DATA_NOTICE.md. In particular, the Co-Pricing Factor Zoo data are
+distributed by their authors under CC BY-NC-SA 3.0:
+https://github.com/Alexander-M-Dickerson/co-pricing-factor-zoo#license-for-data
+https://creativecommons.org/licenses/by-nc-sa/3.0/
+
+The study filters and combines factor returns, changes documented signal
+orientations, and computes new summaries, regressions and visualizations.
+No endorsement by the original authors or data providers is implied.
+Source data and source-like monthly return series are not bundled in the public
+tree. Summary evidence is not a blanket commercial-use or redistribution grant;
+consult research/DATA_NOTICE.md for scope and remaining permission questions.

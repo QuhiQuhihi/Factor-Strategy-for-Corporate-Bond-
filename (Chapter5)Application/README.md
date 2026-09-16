@@ -4,7 +4,11 @@
 
 ## Research conclusion
 
-Equity-derived bond signals can change portfolio exposures and reduce volatility in the tested combination. They do not deliver statistically reliable incremental alpha here, and the later evaluation segment is negative before trading costs.
+The fixed combination does not justify an allocation: it has inconclusive incremental
+performance and a negative later mean before costs. The new conditional analysis
+identifies a distinction hidden by the average: equity momentum has positive alpha
+against the specified bond-factor controls, while equity value has negative alpha.
+This is a lead for research, not a tested momentum-only investment strategy.
 
 The useful output is a documented method for deciding whether an apparent credit factor deserves further investigation. It can support research prioritization and risk analysis; it does not yet justify deploying this portfolio.
 
@@ -24,23 +28,45 @@ The regression alpha is conditional on the selected benchmark. It is not a valua
 
 ### Equity information in bond research
 
-Issuer equity momentum, valuation, and profitability remain plausible inputs to a broader credit research process. Here, equity momentum's full-sample market-plus-TERM alpha has a nominal p-value of 0.049, but q = 0.244 after the stated multiple-testing adjustment. This is a reason to investigate its mechanism and stability, not a confirmed signal.
+Issuer equity momentum, valuation, and profitability should not be treated as
+interchangeable additions. Equity momentum's original market-plus-TERM alpha has
+p = 0.049 and q = 0.244. In the exploratory model that additionally controls for the
+three individual bond factors, its annual alpha is 3.93% with q = 0.00018; later
+alpha is 2.91% with q = 0.010. These are different conditioning sets and testing
+families. The composite's conditional alpha remains inconclusive. A contemporaneous
+regression intercept does not establish net returns to a feasible hedge.
 
 Future work should distinguish information about improving issuer fundamentals from compensation for changing credit risk. Bond and equity claims occupy different positions in the capital structure, so an equity-style label alone does not determine the appropriate credit trade.
 
-## A focused next experiment
+## Research decision
 
-The completed factor-series study leaves one useful security-level question: **does a joint issuer-equity and bond-characteristic score improve selection within comparable credit-risk groups?**
+Do not promote the fixed six-signal combination as a successful strategy. Its later
+incremental mean versus the volatility-scaled bond control is −13.71 bps/year, with
+a 95% interval ending at +24.19 bps. That provides no support for the amendment's
+illustrative 50-bps additional-return requirement under the stated assumptions.
 
-A follow-on experiment would require:
+Allocate the next research effort to a narrower question: **does issuer equity
+momentum predict bond repricing within comparable credit-risk groups, or is its
+conditional alpha explained by risk exposure and stale observations?**
+
+A follow-on experiment requires:
 
 1. A public or licensed bond-month return panel with reliable issuer links, signal availability dates, accrued interest, and cash flows.
 2. Lagged bond spread/momentum and issuer equity characteristics, preserving publication lags and missingness.
-3. The same eligible universe for separate-sleeve and integrated-score portfolios.
+3. The same eligible universe for bond-only and bond-plus-equity comparisons, across issuers within comparable risk groups.
 4. Measured holdings, issuer concentration, duration and rating exposures, turnover, borrowing requirements, and execution-delay sensitivity.
 5. A genuinely later evaluation period, with selection rules fixed before its returns are inspected.
 
-Ratings and issuer identifiers cannot be inferred from aggregate factor returns. The current public-data study therefore completes the replication and factor-combination question without claiming that this next experiment has been performed.
+Distinguish information transmission from stale-price measurement with fresh-price
+subsets and executable entry-delay tests. Merely shifting published factor returns
+does not simulate execution. An issuer signal is constant within issuer-month, so
+issuer-by-month fixed effects would absorb it. A within-issuer relative-value question
+would require bond-specific characteristics instead.
+
+The [next-experiment design](../research/RESEARCH_AGENDA.md)
+specify the counterfactuals, timing, economic endpoints and missing data. This follow-up
+is designed, not run. No ratings, holdings or issuer identifiers are inferred from
+aggregate factor returns.
 
 ## What this project demonstrates
 
@@ -48,8 +74,9 @@ The research contribution is visible in the sequence from hypothesis to conclusi
 
 - Independent reproduction of a large published-data comparison.
 - Explicit handling of factor direction and mixed data provenance.
-- A transparent, fixed bond-plus-equity experiment.
-- Statistical inference that distinguishes a positive point estimate from supported alpha.
+- A transparent fixed experiment, followed by a dated exploratory amendment.
+- Conditional signal attribution and a benchmark scaled without current-return leakage.
+- Paired uncertainty, cost headroom and precision interpreted as a research decision.
 - A conclusion that survives adverse results and identifies the evidence needed for a stronger claim.
 
 The original ambition to build an “optimal corporate bond strategy” is too strong for the available evidence. The updated project supports a narrower, defensible claim: **a reproducible investigation of how equity information, data choices, and implementation assumptions affect corporate bond factor research.**

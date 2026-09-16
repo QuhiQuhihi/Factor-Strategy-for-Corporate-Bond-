@@ -1,4 +1,4 @@
-"""Run the fixed six-signal study from cached public archives (no network calls)."""
+"""Run replication, fixed portfolios and exploratory diagnostics from cached archives."""
 from __future__ import annotations
 
 import hashlib
@@ -204,6 +204,27 @@ def figures(primary: pd.DataFrame, summary: pd.DataFrame):
     fig.savefig(FIGURES / "signal_correlations.png")
     plt.close(fig)
 
+    # The amendment asks about alpha conditional on individual bond factors too.
+    conditional = pd.read_csv(RESULTS / "incremental_spanning.csv")
+    targets = ["Equity-derived", "Equity momentum", "Equity value", "Equity profitability"]
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), layout="constrained", sharex=True)
+    for ax, sample in zip(axes, ["Full", "Evaluation"]):
+        part = conditional.query("dataset == 'DFPS' and sample == @sample and lags == 6").set_index("target").loc[targets]
+        for i, (target, row) in enumerate(part.iterrows()):
+            alpha = row.annual_alpha_pct
+            ax.errorbar(alpha, i, xerr=[[alpha-row.alpha_ci_low_pct], [row.alpha_ci_high_pct-alpha]],
+                        fmt="o" if i == 0 else "s", color="#234a80" if i == 0 else "#157f79",
+                        capsize=5, markersize=7)
+        ax.set(yticks=range(4), yticklabels=targets, title=f"{sample} sample (n={int(part.n.iloc[0])})",
+               xlabel="Annual conditional alpha (%)", ylim=(3.6, -.6))
+        ax.axvline(0, color="#888888", lw=1)
+        ax.grid(axis="x", alpha=.2)
+    fig.suptitle("Issuer equity signals have different conditional alphas\n"
+                 "Controls: three bond factors + MKTB + TERM | exploratory, gross of costs", fontsize=12)
+    fig.supxlabel("DFPS | 95% pointwise HAC intervals, six lags | Full: Sep 2002–Nov 2021; evaluation: Feb 2016–Nov 2021", fontsize=9)
+    fig.savefig(FIGURES / "incremental_alpha.png")
+    plt.close(fig)
+
 
 def main():
     RESULTS.mkdir(parents=True, exist_ok=True)
@@ -293,6 +314,8 @@ def main():
                 "costs": "Uncalibrated annual hurdles, not estimated trading costs",
                 "raw_sha256": {k: manifest[k]["sha256"] for k in [ARCHIVE, "Factor_Time_Series_LongShort.zip", "djm_data.zip"]}}
     (RESULTS/"study_metadata.json").write_text(json.dumps(metadata, indent=2)+"\n")
+    from incremental import write_diagnostics
+    write_diagnostics(frames, benchmark, periods, RESULTS)
     figures(frames["DFPS"], summary)
     print(json.dumps(metadata, indent=2))
     print(summary.query("dataset == 'DFPS' and strategy in @COMPOSITES")[["sample", "strategy", "annual_mean_pct", "sharpe", "market_term_alpha_pct", "market_term_alpha_p", "market_term_alpha_q"]].to_string(index=False))

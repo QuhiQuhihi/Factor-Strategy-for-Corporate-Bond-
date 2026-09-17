@@ -16,6 +16,13 @@ from urllib.parse import unquote
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+HISTORY_RISK_PATHS = (
+    "(Chapter1)Data/TRACE_DB_link.txt",
+    "old/Monthly_Log_Returns.csv",
+    "old/analysis.ipynb",
+    "(Chapter1)Data/old/OR_factors.ipynb",
+)
+RETIRED_FILES = {"LEGACY.md", "requirements.txt", "Combined_README.ipynb"}
 TEXT_SUFFIXES = {".py", ".ipynb", ".md", ".txt", ".json", ".toml", ".yml", ".yaml", ".sql", ".lock", ".csv"}
 SECRET_PATTERNS = {
     "private key": r"-----BEGIN (?:OPENSSH |RSA |EC )?PRIVATE KEY-----",
@@ -53,6 +60,8 @@ def audit() -> list[str]:
     public = set(candidates)-ignored
     for relative in sorted(public):
         path = ROOT/relative
+        if relative in RETIRED_FILES:
+            errors.append(f"{relative}: retired artifact must not be published")
         if path.is_symlink() or not path.is_file():
             errors.append(f"{relative}: missing file or symlink requires review")
             continue
@@ -92,6 +101,24 @@ def audit() -> list[str]:
     return sorted(public)
 
 
+def check_history() -> None:
+    shallow = subprocess.run(["git", "rev-parse", "--is-shallow-repository"], cwd=ROOT,
+                             check=True, capture_output=True, text=True).stdout.strip()
+    if shallow == "true":
+        raise SystemExit("History check requires a full clone; shallow history cannot establish absence.")
+    exposed = []
+    for path in HISTORY_RISK_PATHS:
+        result = subprocess.run(["git", "log", "--all", "--format=%H", "--", path],
+                                cwd=ROOT, check=True, capture_output=True, text=True)
+        if result.stdout.strip():
+            exposed.append(path)
+    if exposed:
+        raise SystemExit("Known restricted paths remain in reachable Git history:\n"+
+                         "\n".join(exposed)+
+                         "\nUse the history-free export for a new repository, or coordinate a separate history cleanup.")
+    print("No known restricted paths found in local reachable history; this is a bounded path check, not a full secret audit.")
+
+
 def export(files: list[str], destination: Path) -> None:
     destination = destination.resolve()
     if destination.exists():
@@ -119,8 +146,11 @@ def export(files: list[str], destination: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--export", type=Path, help="Create a new directory containing a history-free tree, ZIP and checksums")
+    parser.add_argument("--check-history", action="store_true", help="Fail if known restricted paths remain in full local Git history")
     args = parser.parse_args()
     files = audit()
+    if args.check_history:
+        check_history()
     if args.export:
         export(files, args.export)
 

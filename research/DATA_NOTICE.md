@@ -35,18 +35,15 @@ download and analysis commands to regenerate them locally under the provider's t
 This avoids bundling source-like series while preserving inspectable summary evidence;
 it does not itself resolve every permission question about that evidence.
 
-## Legacy materials and public reuse
+## Public reuse
 
-Earlier private-data notebooks, bond-level return exports, database share links,
-vendor documents and copied screenshots are excluded from the current public tree.
-Locally retained copies of upstream processing scripts, including code attributed
-to Alexander Dickerson and Francis Cong, are excluded as well. Consult the
-[upstream repository](https://github.com/Alexander-M-Dickerson/TRACE-corporate-bond-processing)
-for the original work; redistribution permission for these copied versions has not
-been established here. The current study does not execute them.
+The maintained tree contains the current study only. Obsolete scripts, private-data
+notebooks, bond-level exports, database share links, vendor documents and copied
+screenshots have been removed. Upstream authors retain credit for their data and
+portfolio construction through the source register; their processing code is not bundled.
 
-Use the project's generated figures rather than the excluded newspaper/provider
-screenshots. For a monetized, sponsored or employer-owned blog, establish permission
+Use the project's generated figures with the source attribution and sample limitations
+intact. For a monetized, sponsored or employer-owned blog, establish permission
 for the intended reuse of licensed source material and affected outputs before
 publishing them. No commercial-use clearance is claimed by this review.
 

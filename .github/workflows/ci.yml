@@ -1,0 +1,28 @@
+name: Research checks
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.12.13"
+          python-version: "3.12"
+          enable-cache: true
+      - name: Install locked environment
+        run: uv sync --locked
+      - name: Test calculations and publication safeguards
+        run: uv run --no-sync python -m unittest discover -s research -p 'test_*.py' -v
+      - name: Check public files and document links
+        run: uv run --no-sync python research/check_publication.py

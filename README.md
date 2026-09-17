@@ -27,7 +27,7 @@ inspected history, and cannot establish a new discovery or executable alpha.
 
 ![Conditional alpha by issuer signal](research/figures/incremental_alpha.png)
 
-[Methods and exploratory amendment](research/PROTOCOL.md) · [Detailed evidence](%28Chapter4%29Evaluation/README.md) · [Next experiments](research/RESEARCH_AGENDA.md)
+[Methods and exploratory amendment](research/PROTOCOL.md) · [Detailed evidence](docs/04-evaluation.md) · [Next experiments](research/RESEARCH_AGENDA.md)
 
 ## Findings
 
@@ -41,7 +41,7 @@ above also controls for individual bond factors and answers a different question
 | Equity-derived bond factors | 0.37% | 2.18% | 0.17 | 0.68% | 0.182 |
 | Combined, 50/50 | 0.13% | 2.53% | 0.05 | 0.61% | 0.343 |
 
-*Computed here: 231 months, September 2002–November 2021; DFPS TRACE-derived returns; annualized arithmetic means and alphas; six-lag Newey–West inference; gross of costs. These are long–short factor returns per unit of long-side notional, not returns on a funded long-only portfolio. Benchmark and signal provenance are explained in [Data](%28Chapter1%29Data/README.md).*
+*Computed here: 231 months, September 2002–November 2021; DFPS TRACE-derived returns; annualized arithmetic means and alphas; six-lag Newey–West inference; gross of costs. These are long–short factor returns per unit of long-side notional, not returns on a funded long-only portfolio. Benchmark and signal provenance are explained in [Data](docs/01-data.md).*
 
 Three results determine the interpretation:
 
@@ -60,25 +60,21 @@ This project demonstrates the research process through inspectable work:
 3. **Test incremental value.** Separate composite allocation performance from conditional signal alpha, use a control scaled with prior information, and quantify paired uncertainty.
 4. **Make a research decision.** Compare the incremental cost budget with a stated materiality threshold, diagnose precision, and specify the evidence needed for a new security-level test.
 
-The original project explored Python/SQL processing of corporate bond data, rolling
-factor models, and ETF benchmarks. The current study replaces its incomplete empirical
-narrative with a documented public-data replication and extension. Retained chapter
-scripts are [historical experiments](LEGACY.md), separate from the current pipeline.
-Private-data notebooks, old outputs, vendor reference copies and copied processing
-scripts are excluded from the public tree. External researchers receive credit for
-their datasets and source portfolios.
+The maintained workflow is in `research/`, with narrative reports in `docs/` and
+an executed `study.ipynb`. Every reported result comes from that workflow. External
+researchers receive credit for their source datasets and portfolios.
 
 ## Read the study
 
 | Chapter | Research question |
 |---|---|
-| [1. Data](%28Chapter1%29Data/README.md) | What exactly is observed, and what does TRACE provenance establish? |
-| [2. Factors and evidence](%28Chapter2%29Factor_model/README.md) | Does issuer information add conditional alpha, and which components explain it? |
-| [3. Portfolio construction](%28Chapter3%29Porfrolio_model/README.md) | Does adding signals beat reducing bond exposure using prior volatility? |
-| [4. Evaluation](%28Chapter4%29Evaluation/README.md) | What do uncertainty, cost headroom, and source differences imply? |
-| [5. Applications](%28Chapter5%29Application/README.md) | Which mechanism deserves a new security-level test? |
+| [1. Data](docs/01-data.md) | What exactly is observed, and what does TRACE provenance establish? |
+| [2. Factors and evidence](docs/02-factors.md) | Does issuer information add conditional alpha, and which components explain it? |
+| [3. Portfolio construction](docs/03-portfolios.md) | Does adding signals beat reducing bond exposure using prior volatility? |
+| [4. Evaluation](docs/04-evaluation.md) | What do uncertainty, cost headroom, and source differences imply? |
+| [5. Applications](docs/05-applications.md) | Which mechanism deserves a new security-level test? |
 
-[Combined research notebook](Combined_README.ipynb) · [Protocol](research/PROTOCOL.md) · [Source register](research/SOURCES.md) · [Exact result tables](research/results/) · [Calculation script](research/run_study.py)
+[Combined research notebook](study.ipynb) · [Protocol](research/PROTOCOL.md) · [Source register](research/SOURCES.md) · [Exact result tables](research/results/) · [Calculation script](research/run_study.py)
 
 ## Reproduce the research
 
@@ -87,21 +83,33 @@ In WSL/Linux with Python 3.12 and uv:
 ~~~bash
 uv sync --locked
 uv run python research/download_sources.py
-uv run python research/run_study.py
 uv run python -m unittest discover -s research -p 'test_*.py' -v
 uv run python research/build_notebook.py
 uv run python research/check_artifacts.py
+uv run python research/check_publication.py
 ~~~
 
-The first download needs internet access. Analysis uses cached archives, checks their recorded SHA-256 hashes, and saves tables and figures under research/results/ and research/figures/. The notebook builder refreshes and executes the combined notebook; the final command independently checks key calculations and saved artifacts. A failed download can be restarted; completed archives are reused. Hash mismatches require investigating a changed source release, not silently accepting new data.
+The first download needs internet access. Analysis uses cached archives, checks their recorded SHA-256 hashes, and saves tables and figures under research/results/ and research/figures/. The notebook builder reruns the study and executes the combined notebook; the artifact checker independently verifies calculations and saved outputs; the publication checker verifies the proposed file set. A failed download can be restarted; completed archives are reused. Hash mismatches require investigating a changed source release, not silently accepting new data.
 
-The study is a research artifact, with a small environment for regenerating its evidence. It does not require the original private TRACE database. Legacy requirements.txt belongs to the earlier experiments; pyproject.toml and uv.lock govern the current study.
+The study is a research artifact, with a small environment for regenerating its evidence. It does not require the original private TRACE database. pyproject.toml and uv.lock define the single supported environment.
 
 Raw archives, extracted benchmarks and monthly return panels are generated locally
 and excluded from version control. The public repository retains summary statistics,
 original figures, source URLs/checksums and the executed notebook. See the
 [publication review](PUBLICATION.md) for the file policy, clean-export command,
 Git-history limitation and considerations for adapting the study into a blog post.
+
+## Repository layout
+
+- `docs/`: data, factors, portfolios, evaluation and applications.
+- `research/`: download, calculation, notebook-build and validation scripts; unit tests.
+- `research/results/` and `research/figures/`: inspectable summary evidence.
+- `research/data/source_manifest.json`: pinned input URLs and SHA-256 checksums.
+- `study.ipynb`: executed report and calculation appendix.
+
+GitHub Actions runs the locked-environment setup, unit tests and publication-file
+checks on pushes and pull requests. Full numerical reproduction uses the commands
+above and the separately downloaded source archives.
 
 ## Interpretation and attribution
 

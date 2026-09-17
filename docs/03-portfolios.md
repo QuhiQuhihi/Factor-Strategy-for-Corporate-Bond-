@@ -1,6 +1,6 @@
 # 3. Portfolio construction: combining bond and issuer information
 
-[Factors](../%28Chapter2%29Factor_model/README.md) · [Next: Evaluation](../%28Chapter4%29Evaluation/README.md)
+[Factors](02-factors.md) · [Next: Evaluation](04-evaluation.md)
 
 ## The object being traded
 
@@ -77,7 +77,7 @@ structural breaks. They are descriptive uncertainty checks, not a studentized te
 
 This completed study tests **mixing existing factor portfolios**. A true integrated strategy would combine characteristics before selecting bonds, allowing overlapping positions to net at the security level.
 
-The earlier README attributed lower turnover and better performance to integration without a completed project backtest. Those outcomes are not established here. Testing them requires bond-level identifiers, dated characteristics, holdings, and rebalancing rules. Aggregate factor-return files cannot reveal turnover savings or issuer concentration.
+Lower turnover and better performance from security-level integration are not established here. Testing them requires bond-level identifiers, dated characteristics, holdings, and rebalancing rules. Aggregate factor-return files cannot reveal turnover savings or issuer concentration.
 
 A future security-level comparison should use the same universe and information dates for both constructions, carry signal observations forward only when available, and measure one-month-ahead returns. It should compare issuer-balanced and bond-weighted results and control duration, rating, and liquidity exposures where the data permit.
 
@@ -87,15 +87,6 @@ The factor return is a long-minus-short spread. Reported annual means equal twel
 
 Drawdown is the decline in cumulative P&L from its running peak, including a zero-P&L starting point, expressed relative to fixed long-side notional. It is not a fund NAV drawdown. A single factor can lose more than 100% of that notional over time because collateral, financing, and liquidation constraints are not modeled.
 
-Fees, bid–ask spreads, borrowing costs, and trade delays are absent. The [evaluation](../%28Chapter4%29Evaluation/README.md) includes transparent annual cost hurdles rather than an estimated net backtest.
-
-## Legacy benchmarks
-
-The original ETF scripts remain as historical experiments. Their saved outputs and
-notebook are excluded from the public tree. Their “risk parity” function minimizes
-volatility and does not equalize risk contributions. Their “mean–variance” function
-maximizes the sample mean/volatility ratio subject to weight bounds.
-
-Those outputs are historical diagnostics, not evidence supporting the current six-signal strategy. The current risk regressions use published MKTB and TERM series; the study does not claim a successful ETF-versus-bond portfolio contest.
+Fees, bid–ask spreads, borrowing costs, and trade delays are absent. The [evaluation](04-evaluation.md) includes transparent annual cost hurdles rather than an estimated net backtest.
 
 [Strategy summary statistics](../research/results/performance.csv) · [Construction and estimation code](../research/run_study.py)

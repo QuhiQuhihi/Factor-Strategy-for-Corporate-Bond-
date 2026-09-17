@@ -4,7 +4,6 @@ import hashlib
 import json
 from pathlib import Path
 import urllib.request
-import argparse
 
 ROOT = Path(__file__).resolve().parent
 SOURCES = {
@@ -12,23 +11,15 @@ SOURCES = {
     "ExcessLongShortVW_All_Databases.zip": "https://openbondassetpricing.com/wp-content/uploads/2025/07/ExcessLongShortVW_All_Databases.zip",
     "Factor_Time_Series_LongShort.zip": "https://openbondassetpricing.com/wp-content/uploads/2024/11/Factor_Time_Series_LongShort.zip",
 }
-REFERENCES = {
-    "openbond_home.html": "https://openbondassetpricing.com/",
-    "delays_2025.pdf": "https://www.ier.hit-u.ac.jp/Common/publication/DP/DPS-A771.pdf",
-    "priced_risk_2023.pdf": "https://wrap.warwick.ac.uk/id/eprint/178961/1/WRAP-Priced-risk-corporate-bonds-23.pdf",
-}
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--references", action="store_true", help="Also cache the cited papers and source webpage")
-    args = parser.parse_args()
     raw = ROOT / "data" / "raw"
     raw.mkdir(parents=True, exist_ok=True)
     manifest_path = ROOT / "data" / "source_manifest.json"
     previous = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     manifest = dict(previous)
-    for name, url in (SOURCES | REFERENCES if args.references else SOURCES).items():
+    for name, url in SOURCES.items():
         path = raw / name
         if not path.exists():
             print(f"Downloading {name}", flush=True)

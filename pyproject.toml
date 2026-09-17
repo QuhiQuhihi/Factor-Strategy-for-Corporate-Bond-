@@ -12,8 +12,6 @@ dependencies = [
   "nbformat>=5.10,<6",
   "nbclient>=0.10,<0.11",
   "ipykernel>=6.29,<7",
-  "tabulate>=0.9,<1",
-  "openpyxl>=3.1,<4",
 ]
 
 [tool.uv]

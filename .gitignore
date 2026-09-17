@@ -1,5 +1,5 @@
 # Public research source, pyproject.toml, uv.lock, summary tables, original
-# figures and Combined_README.ipynb are intentionally versioned.
+# figures and study.ipynb are intentionally versioned.
 # Ignore rules do not remove files already tracked or erase Git history.
 
 # Local environments and Python/build/test caches
@@ -108,24 +108,8 @@ $RECYCLE.BIN/
 /research/results/monthly_returns_*.csv
 /research/results/risk_control_returns_*.csv
 
-# Earlier private-data experiments, embedded outputs, and copied reference assets.
-# Local files are preserved; the public study runs only research/*.py.
+# Retired experiments must not be reintroduced into the maintained project.
 /old/
-/(Chapter1)Data/old/
-/(Chapter1)Data/openbond_data_processing/
-/(Chapter1)Data/TRACE_DB_link.txt
-/(Chapter1)Data/EDA/*.pdf
-/(Chapter1)Data/EDA/*.docx
-/(Chapter1)Data/image_chapter1/
-/(Chapter1)Data/portfolio_construction.ipynb
-/(Chapter1)Data/*.csv
-/(Chapter1)Data/test.ipynb
-/(Chapter2)Factor_model/test.ipynb
-/(Chapter2)Factor_model/*.csv
-/(Chapter3)Porfrolio_model/etf_benchmark_model.ipynb
-/(Chapter3)Porfrolio_model/image_chapter3/
-/(Chapter3)Porfrolio_model/*.csv
+/(Chapter*)*/
 /*.csv
-
-# Personal hiring assessment; scientific next steps live in RESEARCH_AGENDA.md.
 /research/RESEARCH_REVIEW.md

@@ -1,6 +1,6 @@
 # 2. Factors: replication before interpretation
 
-[Data](../%28Chapter1%29Data/README.md) · [Next: Portfolio construction](../%28Chapter3%29Porfrolio_model/README.md)
+[Data](01-data.md) · [Next: Portfolio construction](03-portfolios.md)
 
 ## Research hypotheses
 
@@ -87,7 +87,7 @@ OLS uses the full stated sample or segment, with Newey–West covariance, six la
 
 Benjamini–Hochberg q-values are computed separately for ten mean tests, ten market-alpha tests, and ten market-plus-TERM-alpha tests within each dataset/segment. Correlated factors and multiple sensitivity exercises mean these are defined-family adjustments, not a universal correction for all research choices.
 
-The current regressions have adequate observations and check design-matrix rank. They supersede the legacy per-bond regression using nine observations for thirteen factors plus an intercept.
+The regressions check that observations are sufficient and the design matrix has full rank.
 
 ## New question: incremental information conditional on bond factors
 

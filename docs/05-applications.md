@@ -1,6 +1,6 @@
 # 5. Applications: what the evidence supports
 
-[Evaluation](../%28Chapter4%29Evaluation/README.md) · [Overview](../README.md)
+[Evaluation](04-evaluation.md) · [Overview](../README.md)
 
 ## Research conclusion
 
@@ -79,4 +79,4 @@ The research contribution is visible in the sequence from hypothesis to conclusi
 - Paired uncertainty, cost headroom and precision interpreted as a research decision.
 - A conclusion that survives adverse results and identifies the evidence needed for a stronger claim.
 
-The original ambition to build an “optimal corporate bond strategy” is too strong for the available evidence. The updated project supports a narrower, defensible claim: **a reproducible investigation of how equity information, data choices, and implementation assumptions affect corporate bond factor research.**
+The project supports a bounded empirical contribution: **a reproducible investigation of how equity information, data choices, and implementation assumptions affect corporate bond factor research.**

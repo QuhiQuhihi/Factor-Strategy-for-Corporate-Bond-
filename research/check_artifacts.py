@@ -25,7 +25,7 @@ def check_links(text, base):
 
 
 def main():
-    files = [ROOT/"README.md", *ROOT.glob("(Chapter*)*/README.md"), *RESEARCH.glob("*.md")]
+    files = [*ROOT.glob("*.md"), *ROOT.glob("docs/*.md"), *RESEARCH.glob("*.md")]
     for path in files:
         check_links(path.read_text(), path.parent)
     metadata = json.loads((RESEARCH/"results/study_metadata.json").read_text())
@@ -87,7 +87,7 @@ def main():
     for key, name in [("protocol_sha256", "PROTOCOL.md"), ("code_sha256", "incremental.py")]:
         assert amendment[key] == hashlib.sha256((RESEARCH/name).read_bytes()).hexdigest()
 
-    notebook = nbformat.read(ROOT/"Combined_README.ipynb", as_version=4)
+    notebook = nbformat.read(ROOT/"study.ipynb", as_version=4)
     nbformat.validate(notebook)
     code_cells = [cell for cell in notebook.cells if cell.cell_type == "code"]
     assert [c.execution_count for c in code_cells] == list(range(1, len(code_cells)+1))

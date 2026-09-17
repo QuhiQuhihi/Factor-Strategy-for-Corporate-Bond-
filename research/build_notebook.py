@@ -11,8 +11,8 @@ import nbformat
 from nbclient import NotebookClient
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ["(Chapter1)Data", "(Chapter2)Factor_model", "(Chapter3)Porfrolio_model",
-           "(Chapter4)Evaluation", "(Chapter5)Application"]
+REPORTS = ["01-data.md", "02-factors.md", "03-portfolios.md",
+           "04-evaluation.md", "05-applications.md"]
 
 
 def rebase_links(text: str, directory: Path) -> str:
@@ -67,8 +67,8 @@ It adds conditional controls, a lagged risk benchmark, paired uncertainty and co
 headroom. Its statistical families do not correct for all prior research choices.
 """)]
     for name in REPORTS:
-        report = (ROOT/name/"README.md").read_text()
-        report = rebase_links(report, ROOT/name)
+        report = (ROOT/"docs"/name).read_text()
+        report = rebase_links(report, ROOT/"docs")
         report = re.sub(r"^# ", "## ", report, count=1)
         cells.append(md(report))
     cells.extend([
@@ -78,7 +78,7 @@ headroom. Its statistical families do not correct for all prior research choices
 
 Run `uv sync --locked` and `uv run python research/download_sources.py` first.
 The following cell checks source hashes and regenerates all tables and figures.
-It performs no network request and does not execute the legacy scripts."""),
+It performs no network request."""),
         code("""from pathlib import Path
 import contextlib
 import io
@@ -189,7 +189,7 @@ backtest is claimed. Detailed provenance and scope are in [SOURCES.md](research/
     nbformat.validate(notebook)
     if any(output.output_type == "error" for cell in notebook.cells if cell.cell_type == "code" for output in cell.outputs):
         raise RuntimeError("Notebook contains errors")
-    destination = ROOT / "Combined_README.ipynb"
+    destination = ROOT / "study.ipynb"
     nbformat.write(notebook, destination)
     print(f"Saved executed report: {destination.name} ({len(cells)} cells)")
 

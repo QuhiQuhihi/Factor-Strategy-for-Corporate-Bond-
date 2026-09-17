@@ -122,4 +122,4 @@ Run `python3 research/download_sources.py` to cache archives in `research/data/r
 Completed downloads are reused and hashes verified; interrupted `.partial` downloads
 restart. `source_manifest.json` records provenance. Analysis will write derived CSVs
 under `research/results/` and figures under `research/figures/`; these can be regenerated
-from the cached archives. Existing research scripts and historical outputs are preserved.
+from the cached archives. Rerunning regenerates derived outputs without changing raw sources.

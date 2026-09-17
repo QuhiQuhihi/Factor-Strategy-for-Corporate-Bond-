@@ -11,7 +11,7 @@
   "primary_hac_lags": 6,
   "spanning_family_size": 4,
   "materiality_bps": 50,
-  "protocol_sha256": "225c4e474cf569d2c0a7db2cea8bbf54997bc779faca2016299f0ba9cf359c2a",
+  "protocol_sha256": "baeaa4cd993cb4fc4c9d488b797b23fe18cb983e061334f2f5858119d8db7470",
   "code_sha256": "d8e45baa1cc2cd43f17d3f1ba38e012990765a8d98a29bc1e684dad5dc608158",
   "source_metadata": "study_metadata.json",
   "inference_limits": "Pointwise/defined-family inference; no correction for historical research selection"

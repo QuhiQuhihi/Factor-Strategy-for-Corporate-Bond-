@@ -1,6 +1,6 @@
 # 4. Evaluation: distinguish signal evidence from an allocation decision
 
-[Portfolio construction](../%28Chapter3%29Porfrolio_model/README.md) · [Next: Applications](../%28Chapter5%29Application/README.md)
+[Portfolio construction](03-portfolios.md) · [Next: Applications](05-applications.md)
 
 ## Main result
 
@@ -53,7 +53,7 @@ inputs and reused history prevent treating this as independent discovery replica
 The control uses only the preceding 60 months to set its exposure. Its average weight
 is 0.724 after warmup and 0.693 in the later segment; the cap never binds in DFPS.
 Realized risks are close, not identical. All comparison returns use the same dates
-and fixed reference notional. [Construction](../%28Chapter3%29Porfrolio_model/README.md)
+and fixed reference notional. [Construction](03-portfolios.md)
 and [exact performance](../research/results/risk_control_performance.csv).
 
 Combined-minus-control Sharpe is +0.032 after warmup, with a paired six-month-block
@@ -182,4 +182,4 @@ data and definitions**. Positive conditional momentum evidence narrows the next
 research question; it does not change the failed allocation case into a successful
 strategy. The factor-level diagnostics are complete; execution remains untested.
 
-[Exact outputs](../research/results/) · [Tests](../research/test_study.py) · [Combined notebook](../Combined_README.ipynb)
+[Exact outputs](../research/results/) · [Tests](../research/test_study.py) · [Combined notebook](../study.ipynb)

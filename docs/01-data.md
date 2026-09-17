@@ -1,6 +1,6 @@
 # 1. Data: a TRACE return study with explicit source boundaries
 
-[Overview](../README.md) · [Next: Factors](../%28Chapter2%29Factor_model/README.md)
+[Overview](../README.md) · [Next: Factors](02-factors.md)
 
 ## The empirical unit
 
@@ -55,9 +55,7 @@ The factor files do not permit rebuilding issuer-balanced portfolios, an investm
 
 The completed empirical scope therefore uses factor series. Security-level tercile construction remains an extension requiring matched identifiers, point-in-time signals, and eligible returns. No claim of security-level replication is made.
 
-## Relation to the original data work
-
-The earlier scripts depended on TRACE.db and Windows paths. The inspected bond-return routine adds a monthly coupon approximation to prices, forward-fills observations, and contains a shift outside the bond grouping and inconsistent outlier code. This is not sufficient evidence of correct accrued-interest total returns.
+## Requirements for a security-level extension
 
 For a future security-level reconstruction, total return must account separately for beginning and ending accrued interest and actual cash payments:
 
@@ -66,7 +64,8 @@ R_{i,t+1} =
 \frac{P_{i,t+1}+AI_{i,t+1}+C_{i,t+1}}{P_{i,t}+AI_{i,t}}-1.
 ~~~
 
-The current analysis consumes authors' portfolio returns and does not run that legacy calculation. TRACE is operated by FINRA; the former “TRACE database by SEC” description was inaccurate. [FINRA TRACE](https://www.finra.org/filing-reporting/trace)
+The current analysis consumes authors' portfolio returns and does not reconstruct
+security-level total returns. TRACE is operated by [FINRA](https://www.finra.org/filing-reporting/trace).
 
 ## Files and recovery
 
@@ -83,4 +82,4 @@ the effect. Those are questions for a matched panel, not missing columns to infe
 
 [download_sources.py](../research/download_sources.py) caches three numerical archives in research/data/raw/. Those files are ignored by Git. [run_study.py](../research/run_study.py) generates the balanced return panels and statistical outputs. All derived returns remain decimal; displayed percentages are explicitly labeled.
 
-Rerun the downloader after an interrupted transfer; it restarts the partial archive and retains completed files. Rerun the analysis from the cached files to regenerate results. Optional paper caches use the downloader's --references flag. The [source register](../research/SOURCES.md) records the publications and precise evidence used.
+Rerun the downloader after an interrupted transfer; it restarts the partial archive and retains completed files. Rerun the analysis from the cached files to regenerate results. The [source register](../research/SOURCES.md) records the publications and precise evidence used.
